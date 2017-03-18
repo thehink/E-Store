@@ -12,6 +12,7 @@ using Microsoft.Extensions.Logging;
 using EStore.Data;
 using EStore.Models;
 using EStore.Services;
+using EStore.Repositories;
 
 namespace EStore
 {
@@ -49,13 +50,15 @@ namespace EStore
 
             services.AddMvc();
 
+            services.AddSingleton<IProductRepository, ProductRepository>();
+
             // Add application services.
             services.AddTransient<IEmailSender, AuthMessageSender>();
             services.AddTransient<ISmsSender, AuthMessageSender>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, ApplicationDbContext dbContext)
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
@@ -83,6 +86,8 @@ namespace EStore
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
+
+            DbInitializer.Initialize(dbContext);
         }
     }
 }
