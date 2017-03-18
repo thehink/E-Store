@@ -1,0 +1,14 @@
+@model EStore.Models.ProductViewModels.ProductsViewModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Index @Model.Products.Count</h2>
+
+<ul>
+    @foreach (var product in Model.Products)
+    {
+        <li>@product.Name, @product.Price</li>
+    }
+</ul>
