@@ -15,7 +15,8 @@ namespace EStore.Repositories
 
         public void Add(Product product)
         {
-
+            this._context.Products.Add(product);
+            this._context.SaveChanges();
         }
 
         public IEnumerable<Product> GetAll()
@@ -30,17 +31,20 @@ namespace EStore.Repositories
 
         public Product Find(int id)
         {
-            return new Product();
+            return this._context.Products.FirstOrDefault(product => product.Id == id);
         }
 
         public void Remove(int id)
         {
-
+            var product = _context.Products.First(p => p.Id == id);
+            this._context.Products.Remove(product);
+            this._context.SaveChanges();
         }
 
         public void Update(Product product)
         {
-
+            this._context.Products.Update(product);
+            this._context.SaveChanges();
         }
     }
 }
