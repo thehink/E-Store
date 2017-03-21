@@ -251,5 +251,6 @@ paket-files/
 .idea/
 *.sln.iml
 
-*/wwwroot/**/*
+*/wwwroot/lib
+*/wwwroot/**/*.min.*
 
