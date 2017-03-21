@@ -7,6 +7,9 @@ namespace EStore.Models.ProductViewModels
 {
     public class ProductsViewModel
     {
+        public string Query { get; set; }
+        public int? CategoryId { get; set; }
         public IList<Product> Products { get; set; }
+        public IList<Category> Categories { get; set; }
     }
 }

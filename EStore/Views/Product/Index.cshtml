@@ -1,14 +1,115 @@
 @model EStore.Models.ProductViewModels.ProductsViewModel
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Products";
 }
 
-<h2>Index @Model.Products.Count</h2>
+<div class="row mt-2">
+    <div class="col">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Products</a></li>
+            @if (Model.CategoryId > 0 && Model.Categories.Any(c => c.Id == Model.CategoryId))
+            {
+                var catName = Model.Categories.FirstOrDefault(c => c.Id == Model.CategoryId).Name;
+                <li class="breadcrumb-item">
+                    @if (string.IsNullOrEmpty(Model.Query))
+                    {
+                        @catName
+                    }
+                    else
+                    {
+                        @Html.ActionLink(catName, "Index", "Product", new { category = Model.CategoryId }, null)
+                    }
+                </li>
+            }
+            @if (!string.IsNullOrEmpty(Model.Query))
+            {
+                <li class="breadcrumb-item active">@Model.Query</li>
+            }
+        </ol>
+    </div>
+</div>
 
-<ul>
-    @foreach (var product in Model.Products)
-    {
-        <li>@product.Name, @product.Price</li>
-    }
-</ul>
+<h1>Home</h1>
+
+<div class="row justify-content-center">
+    <div class="col-xs-12 col-sm-12 col-lg-6">
+        <form asp-controller="Product" asp-action="Index" asp-route-returnurl="@ViewData["ReturnUrl"]" method="get">
+            <input type="hidden" name="category" value="@Model.CategoryId">
+            <div class="form-group row">
+                <div class="col">
+                    <input type="text" name="q" class="form-control" id="search_text" placeholder="Search" value="@Model.Query">
+                </div>
+                <button type="submit" class="btn btn-primary col-auto"><i class="fa fa-search" aria-hidden="true"></i></button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-3">
+        <div class="card">
+            <div class="card-header">
+                Categories
+            </div>
+            <div class="list-group">
+                @Html.ActionLink("All", "Index", "Product", new { category = 0, q = Model.Query }, new { @class = $"list-group-item{(Model.CategoryId == 0 ? " active" : "")}" })
+                @foreach (var category in Model.Categories)
+                {
+                    @Html.ActionLink(category.Name, "Index", "Product", new { category = category.Id, q = Model.Query }, new { @class = $"list-group-item{(Model.CategoryId == category.Id ? " active" : "")}" });
+                }
+            </div>
+        </div>
+    </div>
+    <div class="col">
+        <div class="products">
+            @foreach (var product in Model.Products)
+            {
+                <div class="card">
+                    <div class="card-block">
+                        <h4 class="card-title">@product.Name</h4>
+                        <p class="card-text">@product.Description</p>
+                        <a href="#" class="btn btn-primary">Buy (@product.Price kr)</a>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+    <div class="col-auto">
+        <div class="card">
+            <div class="card-header">
+                Cart <span class="badge badge-default">0 Items</span>
+            </div>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item justify-content-between">
+                    <a href="" class="mr-3">1x Baseball bat</a>
+                    <div class="">
+                        <a href=""><span class="badge badge-danger"><i class="fa fa-trash-o" aria-hidden="true"></i></span></a>
+                        <a href=""><span class="badge badge-warning"><i class="fa fa-minus" aria-hidden="true"></i></span></a>
+                        <a href=""><span class="badge badge-success"><i class="fa fa-plus" aria-hidden="true"></i></span></a>
+                    </div>
+                </li>
+                <li class="list-group-item justify-content-between">
+                    <a href="">1x Baseball bat</a>
+                    <div class="">
+                        <a href=""><span class="badge badge-danger"><i class="fa fa-trash-o" aria-hidden="true"></i></span></a>
+                        <a href=""><span class="badge badge-warning"><i class="fa fa-minus" aria-hidden="true"></i></span></a>
+                        <a href=""><span class="badge badge-success"><i class="fa fa-plus" aria-hidden="true"></i></span></a>
+                    </div>
+                </li>
+                <li class="list-group-item justify-content-between">
+                    <a href="">1x Baseball bat</a>
+                    <div class="">
+                        <a href=""><span class="badge badge-danger"><i class="fa fa-trash-o" aria-hidden="true"></i></span></a>
+                        <a href=""><span class="badge badge-warning"><i class="fa fa-minus" aria-hidden="true"></i></span></a>
+                        <a href=""><span class="badge badge-success"><i class="fa fa-plus" aria-hidden="true"></i></span></a>
+                    </div>
+                </li>
+            </ul>
+            <div class="card-footer">
+                <span class="align-middle">4,324 kr</span>
+                <a href="#" class="btn btn-primary">Checkout</a>
+            </div>
+        </div>
+    </div>
+</div>

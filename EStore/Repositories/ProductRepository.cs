@@ -24,9 +24,13 @@ namespace EStore.Repositories
             return this._context.Products.ToList();
         }
 
-        public IEnumerable<Product> Filter(string str, int categoryId, decimal maxPrice = 0, decimal minPrice = 0)
+        public IEnumerable<Product> Filter(string query, int categoryId)
         {
-            return this._context.Products.ToList();
+            return this._context.Products.Where(
+                product => 
+                (string.IsNullOrEmpty(query) || product.Name.Contains(query)) &&
+                (categoryId == 0 || product.Category.Id == categoryId)
+              ).ToList();
         }
 
         public Product Find(int id)

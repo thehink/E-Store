@@ -21,32 +21,26 @@ namespace EStore.Data
             {
                 new Category {
                     Name = "Stuff",
-                    CategoryId = null,
                     Author = context.Users.Where(u => u.Email == "benja280@gmail.com").FirstOrDefault()
                 },
                 new Category {
                     Name = "More Stuff",
-                    CategoryId = null,
                     Author = context.Users.Where(u => u.Email == "benja280@gmail.com").FirstOrDefault()
                 },
                 new Category {
                     Name = "Even More Stuff",
-                    CategoryId = null,
                     Author = context.Users.Where(u => u.Email == "benja280@gmail.com").FirstOrDefault()
                 },
                 new Category {
                     Name = "Lul",
-                    CategoryId = null,
                     Author = context.Users.Where(u => u.Email == "benja280@gmail.com").FirstOrDefault()
                 },
                 new Category {
                     Name = "Balbla",
-                    CategoryId = null,
                     Author = context.Users.Where(u => u.Email == "benja280@gmail.com").FirstOrDefault()
                 },
                 new Category {
                     Name = "Sub Category to More Stuff",
-                    CategoryId = 1,
                     Author = context.Users.Where(u => u.Email == "benja280@gmail.com").FirstOrDefault()
                 },
             };
@@ -54,6 +48,47 @@ namespace EStore.Data
             foreach (var category in categories)
             {
                 context.Categories.Add(category);
+            }
+
+            context.SaveChanges();
+
+            var subCategories = new SubCategory[]
+            {
+                new SubCategory {
+                    Name = "Stuff",
+                    ParentCategory = context.Categories.Where(u => u.Id == 1).FirstOrDefault(),
+                    Author = context.Users.Where(u => u.Email == "benja280@gmail.com").FirstOrDefault()
+                },
+                new SubCategory {
+                    Name = "More Stuff",
+                    ParentCategory = context.Categories.Where(u => u.Id == 1).FirstOrDefault(),
+                    Author = context.Users.Where(u => u.Email == "benja280@gmail.com").FirstOrDefault()
+                },
+                new SubCategory {
+                    Name = "Even More Stuff",
+                    ParentCategory = context.Categories.Where(u => u.Id == 1).FirstOrDefault(),
+                    Author = context.Users.Where(u => u.Email == "benja280@gmail.com").FirstOrDefault()
+                },
+                new SubCategory {
+                    Name = "Lul",
+                    ParentCategory = context.Categories.Where(u => u.Id == 1).FirstOrDefault(),
+                    Author = context.Users.Where(u => u.Email == "benja280@gmail.com").FirstOrDefault()
+                },
+                new SubCategory {
+                    Name = "Balbla",
+                    ParentCategory = context.Categories.Where(u => u.Id == 1).FirstOrDefault(),
+                    Author = context.Users.Where(u => u.Email == "benja280@gmail.com").FirstOrDefault()
+                },
+                new SubCategory {
+                    Name = "Sub Category to More Stuff",
+                    ParentCategory = context.Categories.Where(u => u.Id == 1).FirstOrDefault(),
+                    Author = context.Users.Where(u => u.Email == "benja280@gmail.com").FirstOrDefault()
+                },
+            };
+
+            foreach (var subCategory in subCategories)
+            {
+                context.SubCategories.Add(subCategory);
             }
 
             context.SaveChanges();

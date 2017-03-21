@@ -50,7 +50,9 @@ namespace EStore
 
             services.AddMvc();
 
+            services.AddSingleton<ICategoryRepository, CategoryRepository>();
             services.AddSingleton<IProductRepository, ProductRepository>();
+            services.AddSingleton<IProductService, ProductService>();
 
             // Add application services.
             services.AddTransient<IEmailSender, AuthMessageSender>();
@@ -84,7 +86,7 @@ namespace EStore
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
+                    template: "{controller=Product}/{action=Index}/{id?}");
             });
 
             DbInitializer.Initialize(dbContext);

@@ -5,29 +5,44 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using EStore.Repositories;
 using EStore.Models.ProductViewModels;
+using EStore.Services;
 
 namespace EStore.Controllers
 {
     public class ProductController : Controller
     {
 
-        private readonly IProductRepository _productRepository;
+        private readonly IProductService _productService;
 
-        public ProductController(IProductRepository productRepository)
+        public ProductController(IProductService productService)
         {
-            this._productRepository = productRepository;
+            this._productService = productService;
         }
 
         public IActionResult Index()
         {
-            var products = this._productRepository.GetAll();
+            int cat;
+            int.TryParse(this.HttpContext.Request.Query["category"], out cat);
+            string query = this.HttpContext.Request.Query["q"];
+
+            var products = this._productService.FilterProducts(query, cat);
+            var categories = this._productService.GetCategories();
 
             var model = new ProductsViewModel()
             {
-                Products = products.ToList()
+                CategoryId = cat,
+                Query = this.HttpContext.Request.Query["q"],
+                Categories = categories,
+                Products = products.Items,
             };
 
             return View(model);
+        }
+
+        public IActionResult Search()
+        {
+            //this.HttpContext.Request.Query
+            return View();
         }
     }
 }
