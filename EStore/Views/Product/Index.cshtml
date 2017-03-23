@@ -34,49 +34,13 @@
 
 <div class="row justify-content-center">
     <div class="col-xs-12 col-sm-12 col-lg-6">
-        <form asp-controller="Product" asp-action="Index" asp-route-returnurl="@ViewData["ReturnUrl"]" method="get">
-            <input type="hidden" name="category" value="@Model.CategoryId">
-            <div class="form-group row">
-                <div class="col">
-                    <input type="text" name="q" class="form-control" id="search_text" placeholder="Search" value="@Model.Query">
-                </div>
-                <button type="submit" class="btn btn-primary col-auto"><i class="fa fa-search" aria-hidden="true"></i></button>
-            </div>
-        </form>
+        
     </div>
 </div>
 
 <div class="row">
-    <div class="col-3">
-        <div class="card">
-            <div class="card-header">
-                Categories
-            </div>
-            <div class="list-group">
-                @Html.ActionLink("All", "Index", "Product", new { category = 0, q = Model.Query }, new { @class = $"list-group-item{(Model.CategoryId == 0 ? " active" : "")}" })
-                @foreach (var category in Model.Categories)
-                {
-                    @Html.ActionLink(category.Name, "Index", "Product", new { category = category.Id, q = Model.Query }, new { @class = $"list-group-item{(Model.CategoryId == category.Id ? " active" : "")}" });
-                }
-            </div>
-        </div>
-    </div>
-    <div class="col">
-        <div class="products">
-            @foreach (var product in Model.Products)
-            {
-                <div class="card">
-                    <div class="card-block">
-                        <h4 class="card-title">@product.Name</h4>
-                        <p class="card-text">@product.Description</p>
-                        <a href="#" class="btn btn-primary">Buy (@product.Price kr)</a>
-                    </div>
-                </div>
-            }
-        </div>
-    </div>
-    <div class="col-auto">
-        <div class="card">
+    <div class="col-sm-4 col-md-4 col-xs-12 mb-4">
+        <div class="card mb-3">
             <div class="card-header">
                 Cart <span class="badge badge-default">0 Items</span>
             </div>
@@ -111,5 +75,43 @@
                 <a href="#" class="btn btn-primary">Checkout</a>
             </div>
         </div>
+        <div class="card">
+            <div class="card-header">
+                Categories
+            </div>
+            <div class="list-group">
+                @Html.ActionLink("All", "Index", "Product", new { category = 0, q = Model.Query }, new { @class = $"list-group-item{(Model.CategoryId == 0 ? " active" : "")}" })
+                @foreach (var category in Model.Categories)
+                {
+                    @Html.ActionLink(category.Name, "Index", "Product", new { category = category.Id, q = Model.Query }, new { @class = $"list-group-item{(Model.CategoryId == category.Id ? " active" : "")}" });
+                }
+            </div>
+        </div>
+    </div>
+    <div class="col">
+        <form asp-controller="Product" asp-action="Index" asp-route-returnurl="@ViewData["ReturnUrl"]" method="get">
+            <input type="hidden" name="category" value="@Model.CategoryId">
+            <div class="form-group row">
+                <div class="col">
+                    <input type="text" name="q" class="form-control" id="search_text" placeholder="Search" value="@Model.Query">
+                </div>
+                <button type="submit" class="btn btn-primary col-auto"><i class="fa fa-search" aria-hidden="true"></i></button>
+            </div>
+        </form>
+        <div class="products">
+            @foreach (var product in Model.Products)
+            {
+                <div class="card">
+                    <div class="card-block">
+                        <h4 class="card-title">@product.Name</h4>
+                        <p class="card-text">@product.Description</p>
+                        <a href="#" class="btn btn-primary">Buy (@product.Price kr)</a>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+    <div class="col-auto">
+        
     </div>
 </div>

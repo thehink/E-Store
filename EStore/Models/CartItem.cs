@@ -6,6 +6,7 @@ namespace EStore.Models
     public class CartItem
     {
         public int Id { get; set; }
+        public int Count { get; set; }
 
         public string Name { get; set; }
 
