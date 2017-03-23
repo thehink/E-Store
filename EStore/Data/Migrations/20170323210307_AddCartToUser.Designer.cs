@@ -8,8 +8,8 @@ using EStore.Data;
 namespace EStore.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20170321202657_UpdatedCategories")]
-    partial class UpdatedCategories
+    [Migration("20170323210307_AddCartToUser")]
+    partial class AddCartToUser
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -23,6 +23,8 @@ namespace EStore.Data.Migrations
                         .ValueGeneratedOnAdd();
 
                     b.Property<int>("AccessFailedCount");
+
+                    b.Property<int>("CartId");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken();
@@ -72,15 +74,15 @@ namespace EStore.Data.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("AspNetUsersId");
-
                     b.Property<DateTime>("CreatedAt");
 
                     b.Property<DateTime>("ModifiedAt");
 
+                    b.Property<string>("UserId");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("AspNetUsersId")
+                    b.HasIndex("UserId")
                         .IsUnique();
 
                     b.ToTable("Carts");
@@ -91,7 +93,9 @@ namespace EStore.Data.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int?>("CartId");
+                    b.Property<int>("CartId");
+
+                    b.Property<int>("Count");
 
                     b.Property<DateTime>("CreatedAt");
 
@@ -291,16 +295,17 @@ namespace EStore.Data.Migrations
 
             modelBuilder.Entity("EStore.Models.Cart", b =>
                 {
-                    b.HasOne("EStore.Models.ApplicationUser", "UserId")
+                    b.HasOne("EStore.Models.ApplicationUser", "User")
                         .WithOne("Cart")
-                        .HasForeignKey("EStore.Models.Cart", "AspNetUsersId");
+                        .HasForeignKey("EStore.Models.Cart", "UserId");
                 });
 
             modelBuilder.Entity("EStore.Models.CartItem", b =>
                 {
-                    b.HasOne("EStore.Models.Cart")
+                    b.HasOne("EStore.Models.Cart", "Cart")
                         .WithMany("Items")
-                        .HasForeignKey("CartId");
+                        .HasForeignKey("CartId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("EStore.Models.Product", "Product")
                         .WithMany()

@@ -18,6 +18,7 @@ namespace EStore.Models
 
         public virtual Category ParentCategory { get; set; }
 
+        public string AuthorId { get; set; }
         public virtual ApplicationUser Author { get; set; }
     }
 }

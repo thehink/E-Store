@@ -6,6 +6,7 @@ namespace EStore.Models
     public class CartItem
     {
         public int Id { get; set; }
+
         public int Count { get; set; }
 
         public string Name { get; set; }
@@ -16,6 +17,9 @@ namespace EStore.Models
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime CreatedAt { get; set; }
+  
+        public int CartId { get; set; }
+        public virtual Cart Cart { get; set; }
 
         public virtual Product Product { get; set; }
     }

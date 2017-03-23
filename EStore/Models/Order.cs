@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace EStore.Models
 {
-    public class Cart
+    public class Order
     {
         public int Id { get; set; }
 
@@ -24,10 +23,12 @@ namespace EStore.Models
         public virtual string UserId { get; set; }
         public virtual ApplicationUser User { get; set; }
 
-        public decimal TotalPrice {
-            get {
+        public decimal TotalPrice
+        {
+            get
+            {
                 return this.Items.Sum(item => item.Count * item.Price);
             }
-        } 
+        }
     }
 }

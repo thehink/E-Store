@@ -8,8 +8,8 @@ using EStore.Data;
 namespace EStore.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20170318194539_CreateInitSchema")]
-    partial class CreateInitSchema
+    [Migration("20170323171423_NewInitialSchema")]
+    partial class NewInitialSchema
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -72,15 +72,15 @@ namespace EStore.Data.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("AspNetUsersId");
-
                     b.Property<DateTime>("CreatedAt");
 
                     b.Property<DateTime>("ModifiedAt");
 
+                    b.Property<string>("UserId");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("AspNetUsersId")
+                    b.HasIndex("UserId")
                         .IsUnique();
 
                     b.ToTable("Carts");
@@ -91,7 +91,9 @@ namespace EStore.Data.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int?>("CartId");
+                    b.Property<int>("CartId");
+
+                    b.Property<int>("Count");
 
                     b.Property<DateTime>("CreatedAt");
 
@@ -117,8 +119,6 @@ namespace EStore.Data.Migrations
 
                     b.Property<string>("AuthorId");
 
-                    b.Property<int?>("CategoryId");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50);
@@ -126,8 +126,6 @@ namespace EStore.Data.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("AuthorId");
-
-                    b.HasIndex("CategoryId");
 
                     b.ToTable("Categories");
                 });
@@ -162,6 +160,28 @@ namespace EStore.Data.Migrations
                     b.HasIndex("CategoryId");
 
                     b.ToTable("Products");
+                });
+
+            modelBuilder.Entity("EStore.Models.SubCategory", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("AuthorId");
+
+                    b.Property<int?>("CategoryId");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(50);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AuthorId");
+
+                    b.HasIndex("CategoryId");
+
+                    b.ToTable("SubCategories");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityRole", b =>
@@ -273,16 +293,17 @@ namespace EStore.Data.Migrations
 
             modelBuilder.Entity("EStore.Models.Cart", b =>
                 {
-                    b.HasOne("EStore.Models.ApplicationUser", "UserId")
+                    b.HasOne("EStore.Models.ApplicationUser", "User")
                         .WithOne("Cart")
-                        .HasForeignKey("EStore.Models.Cart", "AspNetUsersId");
+                        .HasForeignKey("EStore.Models.Cart", "UserId");
                 });
 
             modelBuilder.Entity("EStore.Models.CartItem", b =>
                 {
-                    b.HasOne("EStore.Models.Cart")
+                    b.HasOne("EStore.Models.Cart", "Cart")
                         .WithMany("Items")
-                        .HasForeignKey("CartId");
+                        .HasForeignKey("CartId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("EStore.Models.Product", "Product")
                         .WithMany()
@@ -294,10 +315,6 @@ namespace EStore.Data.Migrations
                     b.HasOne("EStore.Models.ApplicationUser", "Author")
                         .WithMany()
                         .HasForeignKey("AuthorId");
-
-                    b.HasOne("EStore.Models.Category", "ParentCategory")
-                        .WithMany("SubCategories")
-                        .HasForeignKey("CategoryId");
                 });
 
             modelBuilder.Entity("EStore.Models.Product", b =>
@@ -308,6 +325,17 @@ namespace EStore.Data.Migrations
 
                     b.HasOne("EStore.Models.Category", "Category")
                         .WithMany()
+                        .HasForeignKey("CategoryId");
+                });
+
+            modelBuilder.Entity("EStore.Models.SubCategory", b =>
+                {
+                    b.HasOne("EStore.Models.ApplicationUser", "Author")
+                        .WithMany()
+                        .HasForeignKey("AuthorId");
+
+                    b.HasOne("EStore.Models.Category", "ParentCategory")
+                        .WithMany("SubCategories")
                         .HasForeignKey("CategoryId");
                 });
 
