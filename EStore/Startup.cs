@@ -13,6 +13,8 @@ using EStore.Data;
 using EStore.Models;
 using EStore.Services;
 using EStore.Repositories;
+using EStore.Managers;
+using Microsoft.AspNetCore.Identity;
 
 namespace EStore
 {
@@ -50,9 +52,12 @@ namespace EStore
 
             services.AddMvc();
 
+            services.AddSingleton<ICartRepository, CartRepository>();
             services.AddSingleton<ICategoryRepository, CategoryRepository>();
             services.AddSingleton<IProductRepository, ProductRepository>();
             services.AddSingleton<IProductService, ProductService>();
+
+            services.AddSingleton<ICartManager, CartManager>();
 
             // Add application services.
             services.AddTransient<IEmailSender, AuthMessageSender>();
@@ -60,7 +65,11 @@ namespace EStore
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, ApplicationDbContext dbContext)
+        public void Configure(
+            IApplicationBuilder app, 
+            IHostingEnvironment env, 
+            ILoggerFactory loggerFactory, 
+            ApplicationDbContext dbContext)
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
@@ -89,7 +98,13 @@ namespace EStore
                     template: "{controller=Product}/{action=Index}/{id?}");
             });
 
-            DbInitializer.Initialize(dbContext);
+            if (env.IsDevelopment())
+            {
+                DbInitializer.Initialize(dbContext);
+            }
+
+            InitilizeRoles.SeedRoles(app.ApplicationServices).Wait();
+            InitilizeAccounts.SeedAccounts(app.ApplicationServices).Wait();
         }
     }
 }
