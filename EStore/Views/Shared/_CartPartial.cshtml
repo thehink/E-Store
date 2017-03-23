@@ -1,0 +1,35 @@
+@using Microsoft.AspNetCore.Identity
+@using EStore.Models
+@using EStore.Managers
+
+@inject ICartManager CartManager
+
+@{
+    var cart = await CartManager.GetCartAsync();
+}
+
+<div class="card mb-3 cart">
+    <div class="card-header">
+        Cart <span class="badge badge-default">@cart.Items.Count Items</span>
+    </div>
+    <ul class="list-group list-group-flush">
+        @foreach (var item in cart.Items)
+        {
+            <li class="list-group-item justify-content-between">
+                <a href="@Url.Action("Details", "Product", new { id = item.Id })" class="mr-3">@(item.Count)x @item.Name</a>
+                <div class="">
+                    <a href="@Url.Action("RemoveAllFromCart", "Cart", new { id = item.Id })"><span class="badge badge-danger"><i class="fa fa-trash-o" aria-hidden="true"></i></span></a>
+                    <a href="@Url.Action("RemoveFromCart", "Cart", new { id = item.Id })"><span class="badge badge-warning"><i class="fa fa-minus" aria-hidden="true"></i></span></a>
+                    <a href="@Url.Action("AddToCart", "Cart", new { id = item.Product.Id })"><span class="badge badge-success"><i class="fa fa-plus" aria-hidden="true"></i></span></a>
+                </div>
+            </li>
+        }
+    </ul>
+    <div class="card-footer">
+        <span class="align-middle">@cart.TotalPrice kr</span>
+        @if (ViewData["ShowCheckout"] == null)
+        {
+            <a href="@Url.Action("Checkout", "Cart", null)" class="btn btn-primary">Checkout</a>
+        }
+    </div>
+</div>

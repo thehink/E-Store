@@ -27,16 +27,47 @@ namespace EStore.Managers
             this._cartRepository = cartRepository;
             this._userManager = userManager;
             this._signInManager = signInManager;
-
-            
         }
 
-        private void Get()
+        public async Task RemoveCartItem(int cartItemId, int count = 0)
         {
+            var cart = await this.GetCartAsync();
 
+            var cartItem = cart.Items.FirstOrDefault(c => c.Id == cartItemId);
+
+            if(cartItem == null)
+            {
+                return;
+            }
+
+            if(count == 0 || cartItem.Count - count <= 0)
+            {
+                cart.Items.Remove(cartItem);
+            }
+            else
+            {
+                cartItem.Count -= count;
+            }
+
+            this._cartRepository.Update(cart);
         }
 
-        private async Task AddProduct(Product product, int count = 1)
+        private async Task<Cart> CreateNewCartAsync()
+        {
+            var user = await GetCurrentUserAsync();
+
+            var cart = new Cart()
+            {
+                User = user,
+                CreatedAt = DateTime.Now,
+                ModifiedAt = DateTime.Now
+            };
+            this._cartRepository.Add(cart);
+
+            return cart;
+        }
+
+        public async Task AddProduct(Product product, int count = 1)
         {
             var cart = await this.GetCartAsync();
 
@@ -55,40 +86,55 @@ namespace EStore.Managers
             }
 
             cartItem.Count += count;
+
+            if(cartItem.Count >= 999)
+            {
+                cartItem.Count = 999;
+            }
+
             this._cartRepository.Update(cart);
         }
 
-        private void UpdateCartItem(CartItem cartItem)
-        {
-
-        }
-
-        private async void test()
-        {
-            var user = await this.GetCurrentUserAsync();
-        }
-
-        private async Task<Cart> GetCartAsync()
+        public async Task<Cart> GetCartAsync()
         {
             var signedIn = this._signInManager.IsSignedIn(this._context.HttpContext.User);
-            
-            if(signedIn)
+
+            if (signedIn)
             {
                 var user = await this.GetCurrentUserAsync();
-                return user.Cart;
+                var userCart = this._cartRepository.FindCartByUserId(user.Id);
+
+                if (userCart != null)
+                {
+                    return userCart;
+                }
+
+                var newCart = await CreateNewCartAsync();
+                return newCart;
             }
-            var cartId = this._context.HttpContext.Session.GetInt32("cartId");
-            if (cartId == null)
+
+            int cartId;// = this._context.HttpContext.Session.GetInt32("cartId");
+            var cartIdStr = this._context.HttpContext.Request.Cookies["cartId"];
+
+            int.TryParse(cartIdStr, out cartId);
+
+            if(cartId != 0)
             {
-                var cart = new Cart();
-                this._cartRepository.Add(cart);
-                this._context.HttpContext.Session.SetInt32("cartId", cart.Id);
-                return cart;
+                var findCart = this._cartRepository.Find(cartId);
+                if(findCart != null)
+                {
+                    return findCart;
+                }
             }
 
-            var findCart = this._cartRepository.Find((int)cartId);
+            var cart = await CreateNewCartAsync();
 
-            return findCart;
+            var cookieOptions = new CookieOptions()
+            {
+                Expires = DateTimeOffset.Now.AddDays(30)
+            };
+            this._context.HttpContext.Response.Cookies.Append("cartId", cart.Id.ToString(), cookieOptions);
+            return cart;
         }
 
         private Task<ApplicationUser> GetCurrentUserAsync()

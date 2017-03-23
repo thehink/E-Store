@@ -12,5 +12,6 @@ namespace EStore.Repositories
         Cart Find(int id);
         void Update(Cart cart);
         void Remove(int id);
+        Cart FindCartByUserId(string userId);
     }
 }

@@ -30,8 +30,6 @@
     </div>
 </div>
 
-<h1>Home</h1>
-
 <div class="row justify-content-center">
     <div class="col-xs-12 col-sm-12 col-lg-6">
         
@@ -40,41 +38,9 @@
 
 <div class="row">
     <div class="col-sm-4 col-md-4 col-xs-12 mb-4">
-        <div class="card mb-3">
-            <div class="card-header">
-                Cart <span class="badge badge-default">0 Items</span>
-            </div>
-            <ul class="list-group list-group-flush">
-                <li class="list-group-item justify-content-between">
-                    <a href="" class="mr-3">1x Baseball bat</a>
-                    <div class="">
-                        <a href=""><span class="badge badge-danger"><i class="fa fa-trash-o" aria-hidden="true"></i></span></a>
-                        <a href=""><span class="badge badge-warning"><i class="fa fa-minus" aria-hidden="true"></i></span></a>
-                        <a href=""><span class="badge badge-success"><i class="fa fa-plus" aria-hidden="true"></i></span></a>
-                    </div>
-                </li>
-                <li class="list-group-item justify-content-between">
-                    <a href="">1x Baseball bat</a>
-                    <div class="">
-                        <a href=""><span class="badge badge-danger"><i class="fa fa-trash-o" aria-hidden="true"></i></span></a>
-                        <a href=""><span class="badge badge-warning"><i class="fa fa-minus" aria-hidden="true"></i></span></a>
-                        <a href=""><span class="badge badge-success"><i class="fa fa-plus" aria-hidden="true"></i></span></a>
-                    </div>
-                </li>
-                <li class="list-group-item justify-content-between">
-                    <a href="">1x Baseball bat</a>
-                    <div class="">
-                        <a href=""><span class="badge badge-danger"><i class="fa fa-trash-o" aria-hidden="true"></i></span></a>
-                        <a href=""><span class="badge badge-warning"><i class="fa fa-minus" aria-hidden="true"></i></span></a>
-                        <a href=""><span class="badge badge-success"><i class="fa fa-plus" aria-hidden="true"></i></span></a>
-                    </div>
-                </li>
-            </ul>
-            <div class="card-footer">
-                <span class="align-middle">4,324 kr</span>
-                <a href="#" class="btn btn-primary">Checkout</a>
-            </div>
-        </div>
+
+        @await Html.PartialAsync("_CartPartial")
+
         <div class="card">
             <div class="card-header">
                 Categories
@@ -101,11 +67,11 @@
         <div class="products">
             @foreach (var product in Model.Products)
             {
-                <div class="card">
+                <div class="card mb-2">
                     <div class="card-block">
                         <h4 class="card-title">@product.Name</h4>
                         <p class="card-text">@product.Description</p>
-                        <a href="#" class="btn btn-primary">Buy (@product.Price kr)</a>
+                        <a href="@Url.Action("AddToCart", "Cart", new { id = product.Id })" class="btn btn-primary">Add To Cart (@product.Price kr)</a>
                     </div>
                 </div>
             }

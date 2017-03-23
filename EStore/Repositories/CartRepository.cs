@@ -1,5 +1,6 @@
 ﻿using EStore.Data;
 using EStore.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,15 +20,14 @@ namespace EStore.Repositories
             this._context.SaveChanges();
         }
 
-        public Cart GetCartByUserId(string userId)
+        public Cart FindCartByUserId(string userId)
         {
-            return this._context.Carts.FirstOrDefault(c => c.UserId.Id == userId);
+            return this._context.Carts.Include("Items").FirstOrDefault(c => c.User.Id == userId);
         }
-
 
         public Cart Find(int id)
         {
-            return this._context.Carts.Where(c => c.Id == id).FirstOrDefault();
+            return this._context.Carts.Include("Items").FirstOrDefault(c => c.Id == id);
         }
 
         public void Update(Cart cart)

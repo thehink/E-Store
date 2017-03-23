@@ -10,5 +10,6 @@ namespace EStore.Services
     {
         CollectionResult<Product> FilterProducts(string query = "", int category = 0);
         List<Category> GetCategories();
+        Product Find(int id);
     }
 }

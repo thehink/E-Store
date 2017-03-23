@@ -19,6 +19,11 @@ namespace EStore.Services
             this._categoryRepository = categoryRepository;
         }
 
+        public Product Find(int id)
+        {
+            return this._productRepository.Find(id);
+        }
+
         public CollectionResult<Product> FilterProducts(string query = "", int category = 0)
         {
             var products = this._productRepository.Filter(query, category);
