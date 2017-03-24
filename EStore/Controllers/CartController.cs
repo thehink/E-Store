@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using EStore.Managers;
 using EStore.Services;
 using EStore.Models.CartViewModels;
+using EStore.Models;
 
 namespace EStore.Controllers
 {
@@ -14,14 +15,17 @@ namespace EStore.Controllers
 
         private readonly ICartManager _cartManager;
         private readonly IProductService _productService;
+        private readonly IOrderService _orderService;
 
         public CartController(
             ICartManager cartManager,
-            IProductService productService
+            IProductService productService,
+            IOrderService orderService
             )
         {
             this._cartManager = cartManager;
             this._productService = productService;
+            this._orderService = orderService;
         }
 
         public IActionResult Index()
@@ -36,16 +40,20 @@ namespace EStore.Controllers
         }
 
         [HttpPost]
-        public IActionResult Checkout(CheckoutViewModel model, string returnUrl)
+        public async Task<IActionResult> Checkout(CheckoutViewModel model, string returnUrl)
         {
 
             ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
             {
+                var cart = await this._cartManager.GetCartAsync();
 
-                if (1==2)
+                var result = this._orderService.Add(cart, model);
+
+                if (result.Status == Models.ServiceModels.ServiceResultStatus.Success)
                 {
                     //successful
+                    return RedirectToAction(nameof(OrderController.Details), nameof(OrderController), new { Id =  "id"});
                 }
                 else
                 {

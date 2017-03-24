@@ -52,6 +52,7 @@ namespace EStore
 
             services.AddMvc();
 
+            services.AddSingleton<IOrderRepository, OrderRepository>();
             services.AddSingleton<ICartRepository, CartRepository>();
             services.AddSingleton<ICategoryRepository, CategoryRepository>();
             services.AddSingleton<IProductRepository, ProductRepository>();

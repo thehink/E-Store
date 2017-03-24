@@ -55,14 +55,20 @@
         </div>
     </div>
     <div class="col">
-        <form asp-controller="Product" asp-action="Index" asp-route-returnurl="@ViewData["ReturnUrl"]" method="get">
+        <form asp-controller="Product" asp-action="Index" asp-route-returnurl="@ViewData["ReturnUrl"]" method="get" class="mb-4">
             <input type="hidden" name="category" value="@Model.CategoryId">
-            <div class="form-group row">
+            <div class="form-group row mb-0">
                 <div class="col">
                     <input type="text" name="q" class="form-control" id="search_text" placeholder="Search" value="@Model.Query">
                 </div>
-                <button type="submit" class="btn btn-primary col-auto"><i class="fa fa-search" aria-hidden="true"></i></button>
+                <div class="col-auto mr-3">
+                    <button type="submit" class="btn btn-primary"><i class="fa fa-search" aria-hidden="true"></i></button>
+                </div>
             </div>
+            @if (!string.IsNullOrEmpty(Model.Query))
+            {
+                <small>Search results for "<b>@Model.Query</b>"</small>
+            }
         </form>
         <div class="products">
             @foreach (var product in Model.Products)

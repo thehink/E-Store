@@ -33,7 +33,7 @@ namespace EStore.Controllers
                 CategoryId = cat,
                 Query = this.HttpContext.Request.Query["q"],
                 Categories = categories,
-                Products = products.Items,
+                Products = products.Data,
             };
 
             return View(model);

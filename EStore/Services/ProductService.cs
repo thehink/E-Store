@@ -1,4 +1,5 @@
 ﻿using EStore.Models;
+using EStore.Models.ServiceModels;
 using EStore.Repositories;
 using System;
 using System.Collections.Generic;
@@ -24,13 +25,14 @@ namespace EStore.Services
             return this._productRepository.Find(id);
         }
 
-        public CollectionResult<Product> FilterProducts(string query = "", int category = 0)
+        public ServiceResultCollection<Product> FilterProducts(string query = "", int category = 0)
         {
-            var products = this._productRepository.Filter(query, category);
+            var products = this._productRepository.Filter(query, category).ToList();
 
-            return new CollectionResult<Product>()
+            return new ServiceResultCollection<Product>()
             {
-                Items = products.ToList()
+                Status = ServiceResultStatus.Success,
+                Data = products
             };
         }
 
