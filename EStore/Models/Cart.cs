@@ -9,7 +9,7 @@ namespace EStore.Models
 {
     public class Cart
     {
-        public int Id { get; set; }
+        public string Id { get; set; }
 
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]

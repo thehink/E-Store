@@ -9,7 +9,9 @@ namespace EStore.Models
     // Add profile data for application users by adding properties to the ApplicationUser class
     public class ApplicationUser : IdentityUser
     {
-        public int CartId { get; set; }
+        public string CartId { get; set; }
         public virtual Cart Cart { get; set; }
+
+        public virtual ICollection<Order> Orders { get; set; }
     }
 }

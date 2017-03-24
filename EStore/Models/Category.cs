@@ -15,9 +15,9 @@ namespace EStore.Models
         [StringLength(50)]
         public string Name { get; set; }
 
-        public virtual ICollection<SubCategory> SubCategories { get; set; }
+        public virtual ICollection<Product> Products { get; set; }
 
-        public virtual string AuthorId { get; set; }
-        public virtual ApplicationUser Author { get; set; }
+        public virtual string UserId { get; set; }
+        public virtual ApplicationUser User { get; set; }
     }
 }

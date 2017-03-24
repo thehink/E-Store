@@ -26,8 +26,8 @@ namespace EStore.Models
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime CreatedAt { get; set; }
 
-        public string AuthorId { get; set; }
-        public virtual ApplicationUser Author { get; set; }
+        public string UserId { get; set; }
+        public virtual ApplicationUser User { get; set; }
 
         public bool Public { get; set; }
 

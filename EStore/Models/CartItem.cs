@@ -18,7 +18,7 @@ namespace EStore.Models
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime CreatedAt { get; set; }
   
-        public int CartId { get; set; }
+        public string CartId { get; set; }
         public virtual Cart Cart { get; set; }
 
         public virtual Product Product { get; set; }

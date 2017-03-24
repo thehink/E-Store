@@ -4,13 +4,13 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace EStore.Data.Migrations
 {
-    public partial class AddCartToUser : Migration
+    public partial class AddOrderStatus : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AddColumn<int>(
-                name: "CartId",
-                table: "AspNetUsers",
+                name: "Status",
+                table: "Orders",
                 nullable: false,
                 defaultValue: 0);
         }
@@ -18,8 +18,8 @@ namespace EStore.Data.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "CartId",
-                table: "AspNetUsers");
+                name: "Status",
+                table: "Orders");
         }
     }
 }

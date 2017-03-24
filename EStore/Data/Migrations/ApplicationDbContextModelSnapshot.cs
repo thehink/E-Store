@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using EStore.Data;
+using EStore.Models;
 
 namespace EStore.Data.Migrations
 {
@@ -23,7 +24,7 @@ namespace EStore.Data.Migrations
 
                     b.Property<int>("AccessFailedCount");
 
-                    b.Property<int>("CartId");
+                    b.Property<string>("CartId");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken();
@@ -70,7 +71,7 @@ namespace EStore.Data.Migrations
 
             modelBuilder.Entity("EStore.Models.Cart", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<string>("Id")
                         .ValueGeneratedOnAdd();
 
                     b.Property<DateTime>("CreatedAt");
@@ -92,7 +93,7 @@ namespace EStore.Data.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int>("CartId");
+                    b.Property<string>("CartId");
 
                     b.Property<int>("Count");
 
@@ -118,25 +119,77 @@ namespace EStore.Data.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("AuthorId");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50);
 
+                    b.Property<string>("UserId");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("AuthorId");
+                    b.HasIndex("UserId");
 
                     b.ToTable("Categories");
+                });
+
+            modelBuilder.Entity("EStore.Models.Order", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Address");
+
+                    b.Property<DateTime>("CreatedAt");
+
+                    b.Property<string>("Email");
+
+                    b.Property<string>("FirstName");
+
+                    b.Property<string>("LastName");
+
+                    b.Property<string>("PhoneNumber");
+
+                    b.Property<int>("Status");
+
+                    b.Property<string>("UserId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Orders");
+                });
+
+            modelBuilder.Entity("EStore.Models.OrderItem", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("Count");
+
+                    b.Property<DateTime>("CreatedAt");
+
+                    b.Property<string>("Name");
+
+                    b.Property<string>("OrderId");
+
+                    b.Property<decimal>("Price");
+
+                    b.Property<int?>("ProductId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrderId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("OrderItems");
                 });
 
             modelBuilder.Entity("EStore.Models.Product", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
-
-                    b.Property<string>("AuthorId");
 
                     b.Property<int?>("CategoryId");
 
@@ -154,35 +207,15 @@ namespace EStore.Data.Migrations
 
                     b.Property<bool>("Public");
 
+                    b.Property<string>("UserId");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("AuthorId");
-
                     b.HasIndex("CategoryId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Products");
-                });
-
-            modelBuilder.Entity("EStore.Models.SubCategory", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("AuthorId");
-
-                    b.Property<int?>("CategoryId");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(50);
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AuthorId");
-
-                    b.HasIndex("CategoryId");
-
-                    b.ToTable("SubCategories");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityRole", b =>
@@ -296,7 +329,8 @@ namespace EStore.Data.Migrations
                 {
                     b.HasOne("EStore.Models.ApplicationUser", "User")
                         .WithOne("Cart")
-                        .HasForeignKey("EStore.Models.Cart", "UserId");
+                        .HasForeignKey("EStore.Models.Cart", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("EStore.Models.CartItem", b =>
@@ -313,31 +347,41 @@ namespace EStore.Data.Migrations
 
             modelBuilder.Entity("EStore.Models.Category", b =>
                 {
-                    b.HasOne("EStore.Models.ApplicationUser", "Author")
+                    b.HasOne("EStore.Models.ApplicationUser", "User")
                         .WithMany()
-                        .HasForeignKey("AuthorId");
+                        .HasForeignKey("UserId");
+                });
+
+            modelBuilder.Entity("EStore.Models.Order", b =>
+                {
+                    b.HasOne("EStore.Models.ApplicationUser", "User")
+                        .WithMany("Orders")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("EStore.Models.OrderItem", b =>
+                {
+                    b.HasOne("EStore.Models.Order", "Order")
+                        .WithMany("Items")
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("EStore.Models.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId");
                 });
 
             modelBuilder.Entity("EStore.Models.Product", b =>
                 {
-                    b.HasOne("EStore.Models.ApplicationUser", "Author")
-                        .WithMany()
-                        .HasForeignKey("AuthorId");
-
                     b.HasOne("EStore.Models.Category", "Category")
-                        .WithMany()
-                        .HasForeignKey("CategoryId");
-                });
+                        .WithMany("Products")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
-            modelBuilder.Entity("EStore.Models.SubCategory", b =>
-                {
-                    b.HasOne("EStore.Models.ApplicationUser", "Author")
+                    b.HasOne("EStore.Models.ApplicationUser", "User")
                         .WithMany()
-                        .HasForeignKey("AuthorId");
-
-                    b.HasOne("EStore.Models.Category", "ParentCategory")
-                        .WithMany("SubCategories")
-                        .HasForeignKey("CategoryId");
+                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityRoleClaim<string>", b =>
