@@ -40,8 +40,10 @@ namespace EStore.Services
             };
         }
 
-        public ServiceResult Add(Cart order, CheckoutViewModel data)
+        public ServiceResult Add(Order order)
         {
+            this._orderRepository.Add(order);
+
             return new ServiceResult()
             {
                 Status = ServiceResultStatus.Success,

@@ -13,12 +13,7 @@ namespace EStore.Repositories
         {
         }
 
-        public void AddCategory(Category category)
-        {
-
-        }
-
-        public void AddSubCategory(SubCategory subCategory)
+        public void Add(Category category)
         {
 
         }

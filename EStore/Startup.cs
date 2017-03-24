@@ -53,10 +53,13 @@ namespace EStore
             services.AddMvc();
 
             services.AddSingleton<IOrderRepository, OrderRepository>();
+            services.AddSingleton<ICartItemRepository, CartItemRepository>();
             services.AddSingleton<ICartRepository, CartRepository>();
             services.AddSingleton<ICategoryRepository, CategoryRepository>();
             services.AddSingleton<IProductRepository, ProductRepository>();
+
             services.AddSingleton<IProductService, ProductService>();
+            services.AddSingleton<IOrderService, OrderService>();
 
             services.AddSingleton<ICartManager, CartManager>();
 
@@ -94,6 +97,11 @@ namespace EStore
 
             app.UseMvc(routes =>
             {
+                routes.MapAreaRoute(
+                    name: "admin_route",
+                    areaName: "Admin",
+                    template: "Admin/{controller=ManageProducts}/{action=Index}/{id?}");
+
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Product}/{action=Index}/{id?}");

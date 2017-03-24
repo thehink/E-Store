@@ -32,15 +32,15 @@ namespace EStore.Repositories
         }
         public IEnumerable<Order> GetOrdersByEmail(string email)
         {
-            return this._context.Orders.Include("OrderItems").Where(order => order.Email == email).ToList();
+            return this._context.Orders.Include("Items").Where(order => order.Email == email).ToList();
         }
         public IEnumerable<Order> GetOrdersByUserId(string userId)
         {
-            return this._context.Orders.Include("OrderItems").Where(order => order.UserId == userId).ToList();
+            return this._context.Orders.Include("Items").Where(order => order.UserId == userId).ToList();
         }
         public Order Find(string id)
         {
-            return this._context.Orders.Include("OrderItems").FirstOrDefault(order => order.Id == id);
+            return this._context.Orders.Include("Items").FirstOrDefault(order => order.Id == id);
         }
     }
 }

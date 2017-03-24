@@ -10,7 +10,7 @@ namespace EStore.Services
 {
     public interface IOrderService
     {
-        ServiceResult Add(Cart order, CheckoutViewModel data);
+        ServiceResult Add(Order order);
 
         ServiceResultCollection<Order> GetOrdersByEmail(string email);
 

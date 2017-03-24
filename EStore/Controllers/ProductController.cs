@@ -25,15 +25,15 @@ namespace EStore.Controllers
             int.TryParse(this.HttpContext.Request.Query["category"], out cat);
             string query = this.HttpContext.Request.Query["q"];
 
-            var products = this._productService.FilterProducts(query, cat);
-            var categories = this._productService.GetCategories();
+            var productsResult = this._productService.FilterProducts(query, cat);
+            var categoriesResult = this._productService.GetCategories();
 
             var model = new ProductsViewModel()
             {
                 CategoryId = cat,
                 Query = this.HttpContext.Request.Query["q"],
-                Categories = categories,
-                Products = products.Data,
+                Categories = categoriesResult.Data,
+                Products = productsResult.Data,
             };
 
             return View(model);

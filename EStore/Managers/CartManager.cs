@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace EStore.Managers
@@ -14,6 +15,7 @@ namespace EStore.Managers
 
         private readonly IHttpContextAccessor _context;
         private readonly ICartRepository _cartRepository;
+        private readonly ICartItemRepository _cartItemRepository;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
 
@@ -21,17 +23,19 @@ namespace EStore.Managers
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             IHttpContextAccessor context,
-            ICartRepository cartRepository)
+            ICartRepository cartRepository,
+            ICartItemRepository cartItemRepository)
         {
             this._context = context;
             this._cartRepository = cartRepository;
+            this._cartItemRepository = cartItemRepository;
             this._userManager = userManager;
             this._signInManager = signInManager;
         }
 
-        public async Task RemoveCartItem(int cartItemId, int count = 0)
+        public async Task RemoveCartItem(ClaimsPrincipal userClaim, int cartItemId, int count = 0)
         {
-            var cart = await this.GetCartAsync();
+            var cart = await this.GetCartAsync(userClaim);
 
             var cartItem = cart.Items.FirstOrDefault(c => c.Id == cartItemId);
 
@@ -42,34 +46,21 @@ namespace EStore.Managers
 
             if(count == 0 || cartItem.Count - count <= 0)
             {
-                cart.Items.Remove(cartItem);
+                //cart.Items.Remove(cartItem);
+                this._cartItemRepository.Remove(cartItem.Id);
             }
             else
             {
                 cartItem.Count -= count;
+                this._cartItemRepository.Update(cartItem);
             }
 
-            this._cartRepository.Update(cart);
+            //this._cartRepository.Update(cart);
         }
 
-        private async Task<Cart> CreateNewCartAsync()
+        public async Task AddProduct(ClaimsPrincipal userClaim, Product product, int count = 1)
         {
-            var user = await GetCurrentUserAsync();
-
-            var cart = new Cart()
-            {
-                User = user,
-                CreatedAt = DateTime.Now,
-                ModifiedAt = DateTime.Now
-            };
-            this._cartRepository.Add(cart);
-
-            return cart;
-        }
-
-        public async Task AddProduct(Product product, int count = 1)
-        {
-            var cart = await this.GetCartAsync();
+            var cart = await this.GetCartAsync(userClaim);
 
             var cartItem = cart.Items.FirstOrDefault(c => c.Product.Id == product.Id);
 
@@ -80,28 +71,51 @@ namespace EStore.Managers
                     Name = product.Name,
                     Price = product.Price,
                     Product = product,
-                    Count = 0,
+                    Cart = cart,
+                    Count = count,
                 };
-                cart.Items.Add(cartItem);
+
+                this._cartItemRepository.Add(cartItem);
             }
-
-            cartItem.Count += count;
-
-            if(cartItem.Count >= 999)
+            else
             {
-                cartItem.Count = 999;
+                cartItem.Count += count;
+                this._cartItemRepository.Update(cartItem);
             }
+        }
+
+        private async Task<Cart> CreateNewCartAsync(ClaimsPrincipal userClaim)
+        {
+            var user = await GetCurrentUserAsync(userClaim);
+
+            var cart = new Cart()
+            {
+                User = user,
+                CreatedAt = DateTime.Now,
+                ModifiedAt = DateTime.Now
+            };
+
+            this._cartRepository.Add(cart);
+
+            return cart;
+        }
+
+        public async Task Empty(ClaimsPrincipal userClaim)
+        {
+            var cart = await this.GetCartAsync(userClaim);
+
+            cart.Items.Clear();
 
             this._cartRepository.Update(cart);
         }
 
-        public async Task<Cart> GetCartAsync()
+        public async Task<Cart> GetCartAsync(ClaimsPrincipal userClaim)
         {
-            var signedIn = this._signInManager.IsSignedIn(this._context.HttpContext.User);
+            var signedIn = this._signInManager.IsSignedIn(userClaim);
 
             if (signedIn)
             {
-                var user = await this.GetCurrentUserAsync();
+                var user = await this.GetCurrentUserAsync(userClaim);
                 var userCart = this._cartRepository.FindCartByUserId(user.Id);
 
                 if (userCart != null)
@@ -109,16 +123,13 @@ namespace EStore.Managers
                     return userCart;
                 }
 
-                var newCart = await CreateNewCartAsync();
+                var newCart = await CreateNewCartAsync(userClaim);
                 return newCart;
             }
 
-            int cartId;// = this._context.HttpContext.Session.GetInt32("cartId");
-            var cartIdStr = this._context.HttpContext.Request.Cookies["cartId"];
+            string cartId = this._context.HttpContext.Request.Cookies["cartId"];
 
-            int.TryParse(cartIdStr, out cartId);
-
-            if(cartId != 0)
+            if(!string.IsNullOrEmpty(cartId))
             {
                 var findCart = this._cartRepository.Find(cartId);
                 if(findCart != null)
@@ -127,7 +138,7 @@ namespace EStore.Managers
                 }
             }
 
-            var cart = await CreateNewCartAsync();
+            var cart = await CreateNewCartAsync(userClaim);
 
             var cookieOptions = new CookieOptions()
             {
@@ -137,9 +148,9 @@ namespace EStore.Managers
             return cart;
         }
 
-        private Task<ApplicationUser> GetCurrentUserAsync()
+        private Task<ApplicationUser> GetCurrentUserAsync(ClaimsPrincipal userClaim)
         {
-            return _userManager.GetUserAsync(this._context.HttpContext.User);
+            return _userManager.GetUserAsync(userClaim);
         }
     }
 }

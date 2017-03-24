@@ -20,9 +20,14 @@ namespace EStore.Services
             this._categoryRepository = categoryRepository;
         }
 
-        public Product Find(int id)
+        public ServiceResult<Product> Find(int id)
         {
-            return this._productRepository.Find(id);
+            var product = this._productRepository.Find(id);
+            return new ServiceResult<Product>()
+            {
+                Status = ServiceResultStatus.Success,
+                Data = product
+            };
         }
 
         public ServiceResultCollection<Product> FilterProducts(string query = "", int category = 0)
@@ -36,10 +41,14 @@ namespace EStore.Services
             };
         }
 
-        public List<Category> GetCategories()
+        public ServiceResultCollection<Category> GetCategories()
         {
-            var categories = this._categoryRepository.GetAll();
-            return categories.ToList();
+            var categories = this._categoryRepository.GetAll().ToList();
+            return new ServiceResultCollection<Category>()
+            {
+                Status = ServiceResultStatus.Success,
+                Data = categories
+            };
         }
     }
 }

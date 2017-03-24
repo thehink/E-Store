@@ -8,8 +8,7 @@ namespace EStore.Repositories
 {
     public interface ICategoryRepository
     {
-        void AddCategory(Category category);
-        void AddSubCategory(SubCategory category);
+        void Add(Category category);
         IEnumerable<Category> GetAll();
     }
 }

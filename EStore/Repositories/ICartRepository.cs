@@ -9,9 +9,9 @@ namespace EStore.Repositories
     public interface ICartRepository
     {
         void Add(Cart cart);
-        Cart Find(int id);
+        Cart Find(string id);
         void Update(Cart cart);
-        void Remove(int id);
+        void Remove(string id);
         Cart FindCartByUserId(string userId);
     }
 }

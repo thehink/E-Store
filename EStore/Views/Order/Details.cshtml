@@ -1,0 +1,79 @@
+@model EStore.Models.OrderViewModels.OrderDetailsViewModel
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2 class="mt-4">Order Reciept </h2>
+
+<div class="row mt-4">
+    <div class="col">
+        <table class="table table-striped">
+            <tbody>
+                <tr>
+                    <th scope="row">Status</th>
+                    <td>
+                        @switch (Model.Order.Status)
+                        {
+                            case OrderStatus.Idle:
+                                <span class="badge badge-default">@Model.Order.Status</span>
+                                break;
+                            case OrderStatus.Processing:
+                                <span class="badge badge-warning">@Model.Order.Status</span>
+                                break;
+                            case OrderStatus.Shipped:
+                                <span class="badge badge-primary">@Model.Order.Status</span>
+                                break;
+                            case OrderStatus.Complete:
+                                <span class="badge badge-success">@Model.Order.Status</span>
+                                break;
+                        }
+                        
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">Order Number</th>
+                    <td>@Model.Order.Id</td>
+                </tr>
+                <tr>
+                    <th scope="row">Created At</th>
+                    <td>@Model.Order.CreatedAt</td>
+                </tr>
+                <tr>
+                    <th scope="row">Email</th>
+                    <td>@Model.Order.Email</td>
+                </tr>
+                <tr>
+                    <th scope="row">Address</th>
+                    <td>@Model.Order.Address</td>
+                </tr>
+                <tr>
+                    <th scope="row">First Name</th>
+                    <td>@Model.Order.FirstName</td>
+                </tr>
+                <tr>
+                    <th scope="row">Last Name</th>
+                    <td>@Model.Order.LastName</td>
+                </tr>
+                <tr>
+                    <th scope="row">PhoneNumber</th>
+                    <td>@Model.Order.PhoneNumber</td>
+                </tr>
+                <tr>
+                    <th scope="row">Items</th>
+                    <td>
+                        <ul>
+                            @foreach (var item in Model.Order.Items)
+                        {
+                                <li>@(item.Count)x @item.Name (@item.Price)</li>
+                            }
+                        </ul>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">Total Price</th>
+                    <td>@Model.Order.TotalPrice</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

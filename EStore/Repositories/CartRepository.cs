@@ -25,7 +25,7 @@ namespace EStore.Repositories
             return this._context.Carts.Include("Items").FirstOrDefault(c => c.User.Id == userId);
         }
 
-        public Cart Find(int id)
+        public Cart Find(string id)
         {
             return this._context.Carts.Include("Items").FirstOrDefault(c => c.Id == id);
         }
@@ -36,7 +36,7 @@ namespace EStore.Repositories
             this._context.SaveChanges();
         }
 
-        public void Remove(int id)
+        public void Remove(string id)
         {
             var cart = _context.Carts.First(p => p.Id == id);
             this._context.Carts.Remove(cart);
