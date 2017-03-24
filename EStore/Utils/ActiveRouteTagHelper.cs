@@ -23,6 +23,11 @@ namespace EStore.Utils
         [HtmlAttributeName("asp-controller")]
         public string Controller { get; set; }
 
+        /// <summary>The name of the area.</summary>
+        /// <remarks>Must be <c>null</c> if <see cref="P:Microsoft.AspNetCore.Mvc.TagHelpers.AnchorTagHelper.Route" /> is non-<c>null</c>.</remarks>
+        [HtmlAttributeName("asp-area")]
+        public string Area { get; set; }
+
         /// <summary>Additional parameters for the route.</summary>
         [HtmlAttributeName("asp-all-route-data", DictionaryAttributePrefix = "asp-route-")]
         public IDictionary<string, string> RouteValues
@@ -58,8 +63,20 @@ namespace EStore.Utils
 
         private bool ShouldBeActive()
         {
+
+            string currentArea = "";
+            if (ViewContext.RouteData.Values.ContainsKey("Area"))
+            {
+                currentArea = ViewContext.RouteData.Values["Area"].ToString();
+            }
+
             string currentController = ViewContext.RouteData.Values["Controller"].ToString();
             string currentAction = ViewContext.RouteData.Values["Action"].ToString();
+
+            if (!string.IsNullOrWhiteSpace(Area) && Area.ToLower() != currentArea.ToLower())
+            {
+                return false;
+            }
 
             if (!string.IsNullOrWhiteSpace(Controller) && Controller.ToLower() != currentController.ToLower())
             {
