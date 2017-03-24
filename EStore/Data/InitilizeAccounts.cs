@@ -28,7 +28,7 @@ namespace EStore.Data
 
                 foreach (var userData in Accounts)
                 {
-                    if (userManager.FindByNameAsync(userData[0]) != null)
+                    if (await userManager.FindByNameAsync(userData[0]) == null)
                     {
                         var user = new ApplicationUser()
                         {
