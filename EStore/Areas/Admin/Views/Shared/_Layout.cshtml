@@ -1,0 +1,28 @@
+@{ 
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<h2 class="mt-4 mb-4">Admin Area</h2>
+
+<div class="row">
+    <div class="col-3">
+        <div class="card">
+            <div class="card-header">
+                Manage
+            </div>
+            <div class="list-group list-group-flush">
+                <a href="#" class="list-group-item list-group-item-action">Products</a>
+                <a href="#" class="list-group-item list-group-item-action">Categories</a>
+                <a href="#" class="list-group-item list-group-item-action">Orders</a>
+                <a href="#" class="list-group-item list-group-item-action">Users</a>
+            </div>
+            <div class="card-footer text-muted">
+            </div>
+        </div>
+    </div>
+    <div class="col">
+        @RenderBody()
+    </div>
+</div>
+
