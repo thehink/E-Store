@@ -20,35 +20,49 @@ namespace EStore.Services
             this._categoryRepository = categoryRepository;
         }
 
+        public ServiceResult Create(Product product)
+        {
+            return new ServiceResult(() =>
+            {
+                this._productRepository.Add(product);
+            });
+        }
+
+        public ServiceResult Update(Product product)
+        {
+            return new ServiceResult(() =>
+            {
+                this._productRepository.Update(product);
+            });
+        }
+
+        public ServiceResult Remove(int id)
+        {
+            return new ServiceResult(() => {
+                this._productRepository.Remove(id);
+            });
+        }
+
         public ServiceResult<Product> Find(int id)
         {
-            var product = this._productRepository.Find(id);
-            return new ServiceResult<Product>()
-            {
-                Status = ServiceResultStatus.Success,
-                Data = product
-            };
+            return new ServiceResult<Product>(() => {
+                return this._productRepository.Find(id);
+            });
         }
 
         public ServiceResultCollection<Product> FilterProducts(string query = "", int category = 0)
         {
-            var products = this._productRepository.Filter(query, category).ToList();
-
-            return new ServiceResultCollection<Product>()
+            return new ServiceResultCollection<Product>(() =>
             {
-                Status = ServiceResultStatus.Success,
-                Data = products
-            };
+                return this._productRepository.Filter(query, category).ToList();
+            });
         }
 
         public ServiceResultCollection<Category> GetCategories()
         {
-            var categories = this._categoryRepository.GetAll().ToList();
-            return new ServiceResultCollection<Category>()
-            {
-                Status = ServiceResultStatus.Success,
-                Data = categories
-            };
+            return new ServiceResultCollection<Category>(() => {
+                return this._categoryRepository.GetAll().ToList();
+            });
         }
     }
 }

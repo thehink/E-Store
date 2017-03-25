@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using EStore.Models;
+using EStore.Models.Admin.ManageProductsViewModels;
 
 namespace EStore.Data
 {
@@ -35,6 +36,16 @@ namespace EStore.Data
             builder.Entity<Product>()
                 .HasOne<Category>(s => s.Category)
                 .WithMany(s => s.Products)
+                .OnDelete(DeleteBehavior.SetNull);
+
+            builder.Entity<Product>()
+                .HasMany<CartItem>(s => s.CartItems)
+                .WithOne(s => s.Product)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<Product>()
+                .HasMany<OrderItem>(s => s.OrderItems)
+                .WithOne(s => s.Product)
                 .OnDelete(DeleteBehavior.Cascade);
 
             builder.Entity<ApplicationUser>()

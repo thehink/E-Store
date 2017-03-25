@@ -19,35 +19,26 @@ namespace EStore.Services
 
         public ServiceResult<Order> Find(string id)
         {
-            var order = this._orderRepository.Find(id);
-
-            return new ServiceResult<Order>()
+            return new ServiceResult<Order>(() =>
             {
-                Status = order == null ? ServiceResultStatus.Error : ServiceResultStatus.Success,
-                Data = order,
-                Message = order == null ? "could not find order" : null
-            };
+                return this._orderRepository.Find(id);
+            });
         }
 
         public ServiceResultCollection<Order> GetOrdersByEmail(string email)
         {
-            var orders = this._orderRepository.GetOrdersByEmail(email).ToList();
-
-            return new ServiceResultCollection<Order>()
+            return new ServiceResultCollection<Order>(() =>
             {
-                Status = ServiceResultStatus.Success,
-                Data = orders,
-            };
+                return this._orderRepository.GetOrdersByEmail(email).ToList();
+            });
         }
 
         public ServiceResult Add(Order order)
         {
-            this._orderRepository.Add(order);
-
-            return new ServiceResult()
+            return new ServiceResult(() =>
             {
-                Status = ServiceResultStatus.Success,
-            };
+                this._orderRepository.Add(order);
+            });
         }
     }
 }

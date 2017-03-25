@@ -10,7 +10,15 @@ namespace EStore.Services
     public interface IProductService
     {
         ServiceResultCollection<Product> FilterProducts(string query = "", int category = 0);
+
         ServiceResultCollection<Category> GetCategories();
+
+        ServiceResult Create(Product product);
+
         ServiceResult<Product> Find(int id);
+
+        ServiceResult Remove(int id);
+
+        ServiceResult Update(Product product);
     }
 }

@@ -5,12 +5,16 @@ using System.Threading.Tasks;
 
 namespace EStore.Models.ServiceModels
 {
-    public class ServiceResultCollection<T> : ServiceResult
+    public class ServiceResultCollection<T> : ServiceResult<List<T>>
     {
+        public ServiceResultCollection(Delegate func) : base(func)
+        {
+        }
+
         public int Results { get; set; }
         public int TotalResults { get; set; }
         public int Index { get; set; }
         public int Limit { get; set; }
-        public List<T> Data { get; set; }
+        public override List<T> Data { get; set; }
     }
 }
