@@ -60,6 +60,7 @@ namespace EStore
 
             services.AddSingleton<IProductService, ProductService>();
             services.AddSingleton<IOrderService, OrderService>();
+            services.AddSingleton<ICategoryService, CategoryService>();
 
             services.AddSingleton<ICartManager, CartManager>();
 

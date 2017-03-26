@@ -58,6 +58,14 @@ namespace EStore.Services
             });
         }
 
+        public ServiceResultCollection<Product> GetAll()
+        {
+            return new ServiceResultCollection<Product>(() =>
+            {
+                return this._productRepository.GetAll().ToList();
+            });
+        }
+
         public ServiceResultCollection<Category> GetCategories()
         {
             return new ServiceResultCollection<Category>(() => {

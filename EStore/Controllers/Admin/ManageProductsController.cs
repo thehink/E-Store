@@ -22,7 +22,7 @@ namespace EStore.Controllers.Admin
         public IActionResult Index()
         {
 
-            var products = this._productService.FilterProducts();
+            var products = this._productService.GetAll();
 
             var model = new ListProductsViewModel()
             {
@@ -121,7 +121,7 @@ namespace EStore.Controllers.Admin
 
             if(productResult.Status == Models.ServiceModels.ServiceResultStatus.Error)
             {
-                ModelState.AddModelError("Error", "Could not update the product");
+                ModelState.AddModelError("Error", "Could not get the product");
                 return View(model);
             }
 
@@ -133,7 +133,7 @@ namespace EStore.Controllers.Admin
             product.Public = model.Public;
             product.CategoryId = model.CategoryId;
 
-            this._productService.Update(product);
+            var result = this._productService.Update(product);
 
             return View(model);
         }

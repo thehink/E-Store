@@ -27,7 +27,7 @@ namespace EStore.Repositories
         public IEnumerable<Product> Filter(string query, int categoryId)
         {
             return this._context.Products.Where(
-                product => 
+                product => product.Public == true &&
                 (string.IsNullOrEmpty(query) || product.Name.Contains(query)) &&
                 (categoryId == 0 || product.Category.Id == categoryId)
               ).ToList();

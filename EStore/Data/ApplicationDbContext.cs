@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using EStore.Models;
 using EStore.Models.Admin.ManageProductsViewModels;
+using EStore.Models.Admin.ManageCategoriesViewModels;
 
 namespace EStore.Data
 {
@@ -70,5 +71,6 @@ namespace EStore.Data
 
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderItem> OrderItems { get; set; }
+        public DbSet<EStore.Models.Admin.ManageCategoriesViewModels.EditCategoryViewModel> EditCategoryViewModel { get; set; }
     }
 }

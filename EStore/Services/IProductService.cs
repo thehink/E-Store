@@ -9,6 +9,8 @@ namespace EStore.Services
 {
     public interface IProductService
     {
+        ServiceResultCollection<Product> GetAll();
+
         ServiceResultCollection<Product> FilterProducts(string query = "", int category = 0);
 
         ServiceResultCollection<Category> GetCategories();
