@@ -72,7 +72,7 @@ namespace EStore.Controllers.Admin
             {
                 if (!model.IsImage())
                 {
-                    ModelState.AddModelError("Error", "Invalid image!");
+                    ModelState.AddModelError("FileInput", "Invalid image!");
                     return View(model);
                 }
                 imagePath = await SaveImageHelper.SaveImage(model.FileInput, uploads);
@@ -157,7 +157,7 @@ namespace EStore.Controllers.Admin
             {
                 if (!model.IsImage())
                 {
-                    ModelState.AddModelError("Error", "Invalid image!");
+                    ModelState.AddModelError("FileInput", "Invalid image!");
                     return View(model);
                 }
                 imagePath = await SaveImageHelper.SaveImage(model.FileInput, uploads);

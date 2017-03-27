@@ -11,6 +11,10 @@
   <PropertyGroup>
     <UserSecretsId>aspnet-EStore-3daecf4a-9f97-4803-adbc-7a816f3b5d84</UserSecretsId>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="wwwroot\uploads\.empty" />
+  </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.0.0" />
     <PackageReference Include="Microsoft.AspNetCore" Version="1.1.1" />
@@ -38,7 +42,6 @@
     <Folder Include="Areas\Admin\Views\Shared\" />
     <Folder Include="Views\Product\" />
     <Folder Include="wwwroot\images\" />
-    <Folder Include="wwwroot\uploads\" />
   </ItemGroup>
 
 </Project>
