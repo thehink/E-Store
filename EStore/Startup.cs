@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -14,7 +10,6 @@ using EStore.Models;
 using EStore.Services;
 using EStore.Repositories;
 using EStore.Managers;
-using Microsoft.AspNetCore.Identity;
 
 namespace EStore
 {
