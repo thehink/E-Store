@@ -6,16 +6,7 @@ using System.Threading.Tasks;
 
 namespace EStore.Repositories
 {
-    public interface ICategoryRepository
+    public interface ICategoryRepository : IRepository<Category, int>
     {
-        void Add(Category category);
-
-        IEnumerable<Category> GetAll();
-
-        Category Find(int id);
-
-        void Update(Category category);
-
-        void Remove(int id);
     }
 }

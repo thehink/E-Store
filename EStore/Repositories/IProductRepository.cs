@@ -6,13 +6,8 @@ using System.Threading.Tasks;
 
 namespace EStore.Repositories
 {
-    public interface IProductRepository
+    public interface IProductRepository : IRepository<Product, int>
     {
-        void Add(Product item);
         IEnumerable<Product> Filter(string query, int categoryId);
-        IEnumerable<Product> GetAll();
-        Product Find(int id);
-        void Remove(int id);
-        void Update(Product item);
     }
 }

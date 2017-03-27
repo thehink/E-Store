@@ -6,12 +6,8 @@ using System.Threading.Tasks;
 
 namespace EStore.Repositories
 {
-    public interface ICartRepository
+    public interface ICartRepository : IRepository<Cart, string>
     {
-        void Add(Cart cart);
-        Cart Find(string id);
-        void Update(Cart cart);
-        void Remove(string id);
         Cart FindCartByUserId(string userId);
     }
 }
