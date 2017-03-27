@@ -11,6 +11,8 @@ namespace EStore.Services
     {
         ServiceResultCollection<Product> GetAll();
 
+        ServiceResultCollection<Product> Search(string query = "", int category = 0, int page = 0, int limit = 10);
+
         ServiceResultCollection<Product> FilterProducts(string query = "", int category = 0);
 
         ServiceResultCollection<Category> GetCategories();

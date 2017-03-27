@@ -21,6 +21,9 @@ namespace EStore.Models.Admin.ManageProductsViewModels
         [DataType(DataType.Currency)]
         public decimal Price { get; set; }
 
+        [DataType(DataType.ImageUrl)]
+        public string Image { get; set; }
+
         [Required]
         public bool Public { get; set; }
 

@@ -16,11 +16,11 @@ namespace EStore.Repositories
 
         public IEnumerable<Order> GetOrdersByEmail(string email)
         {
-            return this._context.Include("Items").Where(order => order.Email == email).ToList();
+            return this._context.Include("Items").Where(order => order.Email == email);
         }
         public IEnumerable<Order> GetOrdersByUserId(string userId)
         {
-            return this._context.Include("Items").Where(order => order.UserId == userId).ToList();
+            return this._context.Include("Items").Where(order => order.UserId == userId);
         }
         public override Order Find(string id)
         {

@@ -50,6 +50,20 @@ namespace EStore.Services
             });
         }
 
+        public ServiceResultCollection<Product> Search(string query = "", int category = 0, int page = 0, int limit = 10)
+        {
+            var items = this._productRepository.Filter(query, category);
+
+            return new ServiceResultCollection<Product>(() =>
+            {
+                return items.Skip(page * limit).Take(limit).ToList();
+            }){
+                Results = items.Count(),
+                Limit = limit,
+                Page = page
+            };
+        }
+
         public ServiceResultCollection<Product> FilterProducts(string query = "", int category = 0)
         {
             return new ServiceResultCollection<Product>(() =>

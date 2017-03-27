@@ -69,19 +69,53 @@
             {
                 <small>Search results for "<b>@Model.Query</b>"</small>
             }
+            <small>Displaying results <b>@(Model.Page * Model.Limit) - @(Model.Page * Model.Limit + Model.Products.Count)</b> out of <b>@Model.Results</b></small>
         </form>
-        <div class="products">
+        <div class="products row">
             @foreach (var product in Model.Products)
             {
-                <div class="card mb-2">
-                    <div class="card-block">
-                        <h4 class="card-title">@product.Name</h4>
-                        <p class="card-text">@product.Description</p>
-                        <a href="@Url.Action("AddToCart", "Cart", new { id = product.Id })" class="btn btn-primary">Add To Cart (@product.Price kr)</a>
+                <div class="col-xs-12 col-sm-12 col-md-6 col-lg-4">
+                    <div class="card mb-2">
+                        @if (!string.IsNullOrEmpty(product.Image))
+                        {
+                            <img class="card-img-top img-fluid" src="@product.Image" alt="Card image cap">
+                        }
+                        <div class="card-block">
+                            <h4 class="card-title"><a asp-controller="Product" asp-action="Details" asp-route-id="@product.Id">@product.Name  (@product.Price kr)</a></h4>
+                            <p class="card-text">@product.Description</p>
+                            <a href="@Url.Action("AddToCart", "Cart", new { id = product.Id })" class="btn btn-primary">Add To Cart</a>
+                        </div>
                     </div>
                 </div>
             }
         </div>
+        <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-center">
+                @if (Model.Page > 0 && Model.Pages > 1)
+                {
+                    <li class="page-item">
+                        <a class="page-link" aria-label="Previous" asp-route-category="@(Model.CategoryId)" asp-route-query="@(Model.Query)" asp-route-page="@(Model.Page - 1)">
+                            <span aria-hidden="true">&laquo;</span>
+                            <span class="sr-only">Previous</span>
+                        </a>
+                    </li>
+                }
+                
+                @for (var i = 0; i < Model.Pages; ++i)
+                {
+                    <li class="page-item @Model.GetActivePageClass(i)"><a class="page-link" asp-route-category="@(Model.CategoryId)" asp-route-query="@(Model.Query)" asp-route-page="@i">@(i + 1)</a></li>
+                }
+                @if (Model.Page < Model.Pages - 1)
+                {
+                    <li class="page-item">
+                        <a class="page-link" aria-label="Next" asp-route-category="@(Model.CategoryId)" asp-route-query="@(Model.Query)" asp-route-page="@(Model.Page + 1)">
+                            <span aria-hidden="true">&raquo;</span>
+                            <span class="sr-only">Next</span>
+                        </a>
+                    </li>
+                }
+            </ul>
+        </nav>
     </div>
     <div class="col-auto">
         

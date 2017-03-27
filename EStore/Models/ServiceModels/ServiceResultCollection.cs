@@ -12,8 +12,7 @@ namespace EStore.Models.ServiceModels
         }
 
         public int Results { get; set; }
-        public int TotalResults { get; set; }
-        public int Index { get; set; }
+        public int Page { get; set; }
         public int Limit { get; set; }
         public override List<T> Data { get; set; }
     }

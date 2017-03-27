@@ -21,19 +21,23 @@ namespace EStore.Controllers
 
         public IActionResult Index()
         {
-            int cat;
-            int.TryParse(this.HttpContext.Request.Query["category"], out cat);
+            int category, page;
+            int.TryParse(this.HttpContext.Request.Query["category"], out category);
+            int.TryParse(this.HttpContext.Request.Query["page"], out page);
             string query = this.HttpContext.Request.Query["q"];
 
-            var productsResult = this._productService.FilterProducts(query, cat);
+            var productsResult = this._productService.Search(query, category, page, 10);
             var categoriesResult = this._productService.GetCategories();
 
             var model = new ProductsViewModel()
             {
-                CategoryId = cat,
+                CategoryId = category,
                 Query = this.HttpContext.Request.Query["q"],
                 Categories = categoriesResult.Data,
                 Products = productsResult.Data,
+                Page = productsResult.Page,
+                Limit = productsResult.Limit,
+                Results = productsResult.Results
             };
 
             return View(model);

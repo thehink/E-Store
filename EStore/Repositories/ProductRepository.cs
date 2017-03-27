@@ -19,7 +19,7 @@ namespace EStore.Repositories
                 product => product.Public == true &&
                 (string.IsNullOrEmpty(query) || product.Name.Contains(query)) &&
                 (categoryId == 0 || product.Category.Id == categoryId)
-              ).ToList();
+              );
         }
     }
 }

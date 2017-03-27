@@ -68,6 +68,7 @@ namespace EStore.Controllers.Admin
                 Price = model.Price,
                 Public = model.Public,
                 CategoryId = model.CategoryId,
+                Image = model.Image,
                 CreatedAt = DateTime.Now
             };
 
@@ -97,6 +98,7 @@ namespace EStore.Controllers.Admin
                 Description = product.Description,
                 CategoryId = product.CategoryId,
                 Price = product.Price,
+                Image = product.Image,
                 Public = product.Public,
                 Categories = categories
             };
@@ -130,6 +132,7 @@ namespace EStore.Controllers.Admin
             product.Name = model.Name;
             product.Description = model.Description;
             product.Price = model.Price;
+            product.Image = model.Image;
             product.Public = model.Public;
             product.CategoryId = model.CategoryId;
 
