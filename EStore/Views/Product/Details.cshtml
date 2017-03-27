@@ -4,62 +4,39 @@
     ViewData["Title"] = "Details";
 }
 
-<h2>Details</h2>
-
-<div>
-    <h4>Product</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Product.Name)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Product.Name)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Product.Description)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Product.Description)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Product.Price)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Product.Price)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Product.Image)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Product.Image)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Product.CreatedAt)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Product.CreatedAt)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Product.Public)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Product.Public)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Product.Category)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Product.Category.Name)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Product.User)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Product.User.Id)
-        </dd>
-    </dl>
+<div class="row mt-2">
+    <div class="col">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Products</a></li>
+            <li class="breadcrumb-item">
+                <a asp-controller="Product" asp-action="Index" asp-route-category="@(Model.Product.CategoryId)">@Model.Product.Category.Name</a>
+            </li>
+            <li class="breadcrumb-item active">@Model.Product.Name</li>
+        </ol>
+    </div>
 </div>
-<div>
-    <a asp-action="Index">Back to List</a>
+
+<div class="row">
+    <div class="col-sm-4 col-md-4 col-xs-12 mb-4">
+
+        @await Html.PartialAsync("_CartPartial")
+
+        
+    </div>
+    <div class="col">
+
+        <div class="card">
+            <h3 class="card-header">@Model.Product.Name <span class="badge badge-default">@Model.Product.Price kr</span></h3>
+            @if (!string.IsNullOrEmpty(Model.Product.Image))
+            {
+                <img class="card-img-top" src="@Model.Product.Image" alt="Card image cap">
+            }
+            <div class="card-block">
+                <p class="card-text">@Model.Product.Description</p>
+            </div>
+            <div class="card-footer text-muted">
+                <a href="@Url.Action("AddToCart", "Cart", new { id = Model.Product.Id })" class="btn btn-primary">Add To Cart</a>
+            </div>
+        </div>
+    </div>
 </div>
