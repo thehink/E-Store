@@ -100,13 +100,13 @@ namespace EStore.Controllers
         }
 
         [HttpGet]
-        public IActionResult AddToCart(int id)
+        public async Task<IActionResult> AddToCart(int id)
         {
             var productResult = this._productService.Find(id);
 
             if(productResult.Status == ServiceResultStatus.Success)
             {
-                this._cartManager.AddProduct(this.User, productResult.Data);
+                await this._cartManager.AddProduct(this.User, productResult.Data);
             }
             
             var referrer = HttpContext.Request.Headers["Referer"].ToString();
@@ -114,18 +114,18 @@ namespace EStore.Controllers
         }
 
         [HttpGet]
-        public IActionResult RemoveFromCart(int id)
+        public async Task<IActionResult> RemoveFromCart(int id)
         {
-            this._cartManager.RemoveCartItem(this.User, id, 1);
+            await this._cartManager.RemoveCartItem(this.User, id, 1);
 
             var referrer = HttpContext.Request.Headers["Referer"].ToString();
             return Redirect(referrer);
         }
 
         [HttpGet]
-        public IActionResult RemoveAllFromCart(int id)
+        public async Task<IActionResult> RemoveAllFromCart(int id)
         {
-            this._cartManager.RemoveCartItem(this.User, id);
+            await this._cartManager.RemoveCartItem(this.User, id);
 
             var referrer = HttpContext.Request.Headers["Referer"].ToString();
             return Redirect(referrer);

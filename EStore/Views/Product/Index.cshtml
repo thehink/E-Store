@@ -69,7 +69,7 @@
             {
                 <small>Search results for "<b>@Model.Query</b>"</small>
             }
-            <small>Displaying results <b>@(Model.Page * Model.Limit) - @(Model.Page * Model.Limit + Model.Products.Count)</b> out of <b>@Model.Results</b></small>
+            <small>Displaying items <b>@(Model.Page * Model.Limit) - @(Model.Page * Model.Limit + Model.Products.Count)</b> out of <b>@Model.Results</b> results</small>
         </form>
         <div class="products row">
             @foreach (var product in Model.Products)

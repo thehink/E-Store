@@ -28,5 +28,7 @@ namespace EStore.Models.ServiceModels
         public ServiceResultStatus Status { get; set; }
 
         public string Message { get; set; }
+
+        public bool Succeeded => this.Status == ServiceResultStatus.Success;
     }
 }

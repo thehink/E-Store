@@ -16,12 +16,12 @@ namespace EStore.Repositories
 
         public Cart FindCartByUserId(string userId)
         {
-            return this._context.Include("Items").FirstOrDefault(c => c.User.Id == userId);
+            return this._context.Include("Items.Product").FirstOrDefault(c => c.User.Id == userId);
         }
 
         public override Cart Find(string id)
         {
-            return this._context.Include("Items").FirstOrDefault(c => c.Id == id);
+            return this._context.Include("Items.Product").FirstOrDefault(c => c.Id == id);
         }
     }
 }

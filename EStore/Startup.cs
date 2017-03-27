@@ -47,17 +47,17 @@ namespace EStore
 
             services.AddMvc();
 
-            services.AddSingleton<IOrderRepository, OrderRepository>();
-            services.AddSingleton<ICartItemRepository, CartItemRepository>();
-            services.AddSingleton<ICartRepository, CartRepository>();
-            services.AddSingleton<ICategoryRepository, CategoryRepository>();
-            services.AddSingleton<IProductRepository, ProductRepository>();
+            services.AddScoped<IOrderRepository, OrderRepository>();
+            services.AddScoped<ICartItemRepository, CartItemRepository>();
+            services.AddScoped<ICartRepository, CartRepository>();
+            services.AddScoped<ICategoryRepository, CategoryRepository>();
+            services.AddScoped<IProductRepository, ProductRepository>();
 
-            services.AddSingleton<IProductService, ProductService>();
-            services.AddSingleton<IOrderService, OrderService>();
-            services.AddSingleton<ICategoryService, CategoryService>();
+            services.AddScoped<IProductService, ProductService>();
+            services.AddScoped<IOrderService, OrderService>();
+            services.AddScoped<ICategoryService, CategoryService>();
 
-            services.AddSingleton<ICartManager, CartManager>();
+            services.AddScoped<ICartManager, CartManager>();
 
             // Add application services.
             services.AddTransient<IEmailSender, AuthMessageSender>();

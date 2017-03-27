@@ -19,7 +19,7 @@ namespace EStore.Controllers
             this._productService = productService;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             int category, page;
             int.TryParse(this.HttpContext.Request.Query["category"], out category);
@@ -43,10 +43,21 @@ namespace EStore.Controllers
             return View(model);
         }
 
-        public IActionResult Search()
+        public async Task<IActionResult> Details(int id)
         {
-            //this.HttpContext.Request.Query
-            return View();
+            var productResult = this._productService.Find(id);
+
+            if (!productResult.Succeeded)
+            {
+                return NotFound();
+            }
+
+            var model = new ProductDetailsViewModel()
+            {
+                Product = productResult.Data
+            };
+
+            return View(model);
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using EStore.Data;
 using EStore.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,5 +22,11 @@ namespace EStore.Repositories
                 (categoryId == 0 || product.Category.Id == categoryId)
               );
         }
+
+        public override Product Find(int id)
+        {
+            return this._context.Include("Category").First(p => p.Id == id);
+        }
+
     }
 }
