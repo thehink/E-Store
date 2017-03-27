@@ -253,4 +253,5 @@ paket-files/
 
 */wwwroot/lib
 */wwwroot/**/*.min.*
+*/wwwroot/uploads
 

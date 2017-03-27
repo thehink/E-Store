@@ -10,6 +10,22 @@ namespace EStore.Data
 {
     public static class DbInitializer
     {
+
+        public static string[] Categories = new string[]
+        {
+            "Category1",
+            "Category2",
+            "Category3",
+            "Category4"
+        };
+
+        public static string[][] Products = new string[][]
+        {
+            new string[]{ "Basket Ball", "Description", "Category1" },
+            new string[]{ "Basket Ball", "Description", "Category1" },
+            new string[]{ "Basket Ball", "Description", "Category1" }
+        };
+
         public static void Initialize(ApplicationDbContext context)
         {
             context.Database.EnsureCreated();
@@ -19,73 +35,32 @@ namespace EStore.Data
                 return;   // DB has been seeded
             }
 
-            var categories = new Category[]
+            foreach (var category in Categories)
             {
-                new Category {
-                    Name = "Stuff",
-                    User = context.Users.Where(u => u.Email == "benja280@gmail.com").FirstOrDefault()
-                },
-                new Category {
-                    Name = "More Stuff",
-                    User = context.Users.Where(u => u.Email == "benja280@gmail.com").FirstOrDefault()
-                },
-                new Category {
-                    Name = "Even More Stuff",
-                    User = context.Users.Where(u => u.Email == "benja280@gmail.com").FirstOrDefault()
-                },
-                new Category {
-                    Name = "Lul",
-                    User = context.Users.Where(u => u.Email == "benja280@gmail.com").FirstOrDefault()
-                },
-                new Category {
-                    Name = "Balbla",
-                    User = context.Users.Where(u => u.Email == "benja280@gmail.com").FirstOrDefault()
-                },
-                new Category {
-                    Name = "Sub Category to More Stuff",
-                    User = context.Users.Where(u => u.Email == "benja280@gmail.com").FirstOrDefault()
-                },
-            };
-
-            foreach (var category in categories)
-            {
-                context.Categories.Add(category);
+                context.Categories.Add(new Category
+                {
+                    Name = category,
+                    User = context.Users.Where(u => u.Email == "admin@demo").FirstOrDefault()
+                });
             }
 
             context.SaveChanges();
 
-            var products = new Product[]
-            {
-                new Product {
-                    Name = "Basket Ball",
-                    Description = "Really Nice basket ball",
-                    Price = 4.99m,
-                    CreatedAt = new DateTime(1996, 5, 2),
-                    User = context.Users.Where(u => u.Email == "benja280@gmail.com").FirstOrDefault(),
-                    Public = true,
-                },
-                new Product {
-                    Name = "Football",
-                    Description = "Really Nice basket ball",
-                    Price = 4.99m,
-                    CreatedAt = new DateTime(1996, 5, 2),
-                    User = context.Users.Where(u => u.Email == "benja280@gmail.com").FirstOrDefault(),
-                    Public = true,
-                },
-                new Product {
-                    Name = "Key",
-                    Description = "A really nice key",
-                    Price = 4.99m,
-                    CreatedAt = new DateTime(1996, 5, 2),
-                    User = context.Users.Where(u => u.Email == "benja280@gmail.com").FirstOrDefault(),
-                    Public = true,
-                },
-            };
+            var rand = new Random();
 
-            foreach (var product in products)
+            foreach (var product in Products)
             {
-                context.Products.Add(product);
+                context.Products.Add(new Product
+                {
+                    Name = product[0],
+                    Description = product[1],
+                    Price = (decimal)rand.NextDouble() * 10000,
+                    CreatedAt = DateTime.Now,
+                    User = context.Users.Where(u => u.Email == "admin@demo").FirstOrDefault(),
+                    Public = true,
+                });
             }
+
             context.SaveChanges();
         }
     }

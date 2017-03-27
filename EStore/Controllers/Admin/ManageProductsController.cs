@@ -1,11 +1,12 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using EStore.Services;
 using EStore.Models.Admin.ManageProductsViewModels;
 using EStore.Models;
+using EStore.Utils;
+using Microsoft.AspNetCore.Hosting;
+using System.IO;
 
 namespace EStore.Controllers.Admin
 {
@@ -13,13 +14,15 @@ namespace EStore.Controllers.Admin
     {
 
         private readonly IProductService _productService;
+        private readonly IHostingEnvironment _environment;
 
-        public ManageProductsController(IProductService productService)
+        public ManageProductsController(IHostingEnvironment environment, IProductService productService)
         {
+            this._environment = environment;
             this._productService = productService;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
 
             var products = this._productService.GetAll();
@@ -32,12 +35,12 @@ namespace EStore.Controllers.Admin
             return View(model);
         }
 
-        public IActionResult Details()
+        public async Task<IActionResult> Details()
         {
             return View();
         }
 
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
             var categories = this._productService.GetCategories().Data;
 
@@ -51,7 +54,7 @@ namespace EStore.Controllers.Admin
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(EditProductViewModel model)
+        public async Task<IActionResult> Create(EditProductViewModel model)
         {
             var categories = this._productService.GetCategories().Data;
             model.Categories = categories;
@@ -61,6 +64,20 @@ namespace EStore.Controllers.Admin
                 return View(model);
             }
 
+            var uploads = Path.Combine(this._environment.WebRootPath, "uploads");
+
+            string imagePath = "";
+
+            if (model.FileInput != null && model.FileInput.Length > 0)
+            {
+                if (!model.IsImage())
+                {
+                    ModelState.AddModelError("Error", "Invalid image!");
+                    return View(model);
+                }
+                imagePath = await SaveImageHelper.SaveImage(model.FileInput, uploads);
+            }
+
             var product = new Product()
             {
                 Name = model.Name,
@@ -68,7 +85,7 @@ namespace EStore.Controllers.Admin
                 Price = model.Price,
                 Public = model.Public,
                 CategoryId = model.CategoryId,
-                Image = model.Image,
+                Image = imagePath,
                 CreatedAt = DateTime.Now
             };
 
@@ -86,7 +103,12 @@ namespace EStore.Controllers.Admin
             return View(model);
         }
 
-        public IActionResult Edit(int id)
+        private string SaveImage(string uploads)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<IActionResult> Edit(int id)
         {
             var product = this._productService.Find(id).Data;
             var categories = this._productService.GetCategories().Data;
@@ -108,7 +130,7 @@ namespace EStore.Controllers.Admin
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(EditProductViewModel model)
+        public async Task<IActionResult> Edit(EditProductViewModel model)
         {
             var categories = this._productService.GetCategories().Data;
 
@@ -127,22 +149,42 @@ namespace EStore.Controllers.Admin
                 return View(model);
             }
 
+            var uploads = Path.Combine(this._environment.WebRootPath, "uploads");
+
+            string imagePath = "";
+
+            if (model.FileInput != null && model.FileInput.Length > 0)
+            {
+                if (!model.IsImage())
+                {
+                    ModelState.AddModelError("Error", "Invalid image!");
+                    return View(model);
+                }
+                imagePath = await SaveImageHelper.SaveImage(model.FileInput, uploads);
+            }
+
+            
+
             var product = productResult.Data;
 
             product.Name = model.Name;
             product.Description = model.Description;
             product.Price = model.Price;
-            product.Image = model.Image;
             product.Public = model.Public;
             product.CategoryId = model.CategoryId;
 
+            if (!string.IsNullOrEmpty(imagePath))
+            {
+                product.Image = imagePath;
+            }
+
             var result = this._productService.Update(product);
 
-            return View(model);
+            return RedirectToAction("Edit", "ManageProducts", new { id = product.Id });
         }
 
         [HttpGet]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
             var result = this._productService.Remove(id);
 
