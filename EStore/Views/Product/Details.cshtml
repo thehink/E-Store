@@ -28,7 +28,9 @@
             <h3 class="card-header">@Model.Product.Name <span class="badge badge-primary">@Model.Product.Price kr</span></h3>
             @if (!string.IsNullOrEmpty(Model.Product.Image))
             {
-                <img class="card-img-top" src="@Model.Product.Image" alt="Card image cap">
+                <div class="card-block">
+                    <img class="rounded mx-auto d-block img-thumbnail" style="max-height:250px" src="@Model.Product.Image" alt="Card image cap">
+                </div>
             }
             <div class="card-block">
                 <p class="card-text">@Model.Product.Description</p>

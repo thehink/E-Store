@@ -16,7 +16,7 @@
         @foreach (var item in cart.Items)
         {
             <li class="list-group-item justify-content-between">
-                <a href="@Url.Action("Details", "Product", new { id = item.Product.Id })" class="mr-3">@(item.Count)x @item.Name</a>
+                <a href="@Url.Action("Details", "Product", new { id = item.Product.Id })" class="mr-3">@(item.Count)x @item.Name (@(item.Price)</a>
                 <div class="">
                     <a href="@Url.Action("RemoveAllFromCart", "Cart", new { id = item.Id })"><span class="badge badge-danger"><i class="fa fa-trash-o" aria-hidden="true"></i></span></a>
                     <a href="@Url.Action("RemoveFromCart", "Cart", new { id = item.Id })"><span class="badge badge-warning"><i class="fa fa-minus" aria-hidden="true"></i></span></a>

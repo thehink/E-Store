@@ -13,17 +13,30 @@ namespace EStore.Data
 
         public static string[] Categories = new string[]
         {
-            "Category1",
-            "Category2",
-            "Category3",
-            "Category4"
+            "Fruits",
+            "Animals",
+            "Stuff",
+            "Misc",
         };
 
         public static string[][] Products = new string[][]
         {
-            new string[]{ "Basket Ball", "Description", "Category1" },
-            new string[]{ "Basket Ball", "Description", "Category1" },
-            new string[]{ "Basket Ball", "Description", "Category1" }
+            new string[]{ "Yellow Banana", "Nice yellow* banana delivered to your closest service point. * Might be a bit darker when you get it.", "Fruits", "banana.png" },
+            new string[]{ "Red Cherry", "", "Fruits", "cherry.png" },
+
+            new string[]{ "Sofisticated Crocodile", "", "Animals", "crocodile.png" },
+            new string[]{ "Bouncy Rubber Duck", "", "Animals", "duck.png" },
+
+            new string[]{ "Greasy Gear", "", "Stuff", "gear.png" },
+            new string[]{ "Shiny Key", "This shiny key opens many doors", "Stuff", "key.png" },
+            new string[]{ "Real Human Skull", "Ever felt the need to own a real human skull?", "Stuff", "skull.png" },
+            new string[]{ "Stop Sign", "When just saying stop is not enough", "Stuff", "stop.png" },
+            new string[]{ "Single Wheel", "", "Stuff", "wheel.png" },
+            new string[]{ "Sun", "", "Stuff", "sun.png" },
+            new string[]{ "Real Fake Diamond", "", "Stuff", "diamond.png" },
+            new string[]{ "Carpet", "", "Stuff", "carpet.png" },
+
+            new string[]{ "Abstract Question Mark", "", "Misc", "question-mark12.png" },
         };
 
         public static void Initialize(ApplicationDbContext context)
@@ -58,6 +71,8 @@ namespace EStore.Data
                     CreatedAt = DateTime.Now,
                     User = context.Users.Where(u => u.Email == "admin@demo").FirstOrDefault(),
                     Public = true,
+                    Category = context.Categories.FirstOrDefault(c => c.Name == product[2]),
+                    Image = $"/product_images/{product[3]}",
                 });
             }
 

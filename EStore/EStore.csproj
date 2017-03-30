@@ -39,6 +39,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Areas\Admin\Views\ManageCategories\" />
+    <Folder Include="Areas\Admin\Views\ManageOrders\" />
     <Folder Include="Areas\Admin\Views\Shared\" />
     <Folder Include="Views\Product\" />
     <Folder Include="wwwroot\images\" />

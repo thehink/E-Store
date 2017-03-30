@@ -12,7 +12,13 @@ namespace EStore.Services
     {
         ServiceResult Add(Order order);
 
+        ServiceResult Remove(string id);
+
+        ServiceResult Update(Order order);
+
         ServiceResultCollection<Order> GetOrdersByEmail(string email);
+
+        ServiceResultCollection<Order> GetAll();
 
         ServiceResult<Order> Find(string id);
     }

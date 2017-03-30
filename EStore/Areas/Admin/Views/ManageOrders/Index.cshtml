@@ -1,0 +1,64 @@
+@model IEnumerable<EStore.Models.Order>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Orders</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Status)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Email)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.CreatedAt)
+                </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @switch (item.Status)
+                {
+                    case OrderStatus.Idle:
+                        <span class="badge badge-default">@item.Status</span>
+                        break;
+                    case OrderStatus.Processing:
+                        <span class="badge badge-warning">@item.Status</span>
+                        break;
+                    case OrderStatus.Shipped:
+                        <span class="badge badge-primary">@item.Status</span>
+                        break;
+                    case OrderStatus.Complete:
+                        <span class="badge badge-success">@item.Status</span>
+                        break;
+                }
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreatedAt)
+            </td>
+            <td>
+                <form class="form-inline" asp-controller="ManageOrders" asp-action="Status" method="post">
+                    <input type="hidden" asp-for="First(m => m.Id == item.Id).Id" />
+                    <select class="form-control" asp-for="First(m => m.Id == item.Id).Status"
+                            asp-items="@(Html.GetEnumSelectList<OrderStatus>())">
+                    </select>
+                    <button type="submit" class="btn btn-primary ml-2">Update</button>
+                </form>
+                <a asp-area="" asp-action="Details" asp-controller="Order" asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

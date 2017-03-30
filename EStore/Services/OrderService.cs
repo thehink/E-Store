@@ -40,5 +40,29 @@ namespace EStore.Services
                 this._orderRepository.Add(order);
             });
         }
+
+        public ServiceResult Update(Order order)
+        {
+            return new ServiceResult(() =>
+            {
+                this._orderRepository.Update(order);
+            });
+        }
+
+        public ServiceResult Remove(string id)
+        {
+            return new ServiceResult(() =>
+            {
+                this._orderRepository.Remove(id);
+            });
+        }
+
+        public ServiceResultCollection<Order> GetAll()
+        {
+            return new ServiceResultCollection<Order>(() =>
+            {
+                return this._orderRepository.GetAll().ToList();
+            });
+        }
     }
 }
