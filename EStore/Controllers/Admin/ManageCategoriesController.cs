@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using EStore.Services;
 using EStore.Models.Admin.ManageCategoriesViewModels;
+using EStore.Models;
 
 namespace EStore.Controllers.Admin
 {
@@ -79,6 +80,50 @@ namespace EStore.Controllers.Admin
             }
 
             return View(model);
+        }
+
+        [HttpGet]
+        public IActionResult Create()
+        {
+            var model = new EditCategoryViewModel();
+            return View(model);
+        }
+
+        [HttpPost]
+        public IActionResult Create(EditCategoryViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View();
+            }
+
+            var category = new Category()
+            {
+                Name = model.Name
+            };
+
+            var result = this._categoryService.Create(category);
+
+            if (!result.Succeeded)
+            {
+                ModelState.AddModelError("Error", result.Message);
+                return View();
+            }
+
+            return RedirectToAction("Index", "ManageCategories");
+        }
+
+        [HttpGet]
+        public IActionResult Delete(int id)
+        {
+            var result = this._categoryService.Remove(id);
+
+            if (result.Succeeded)
+            {
+                
+            }
+
+            return RedirectToAction("Index", "ManageCategories");
         }
     }
 }

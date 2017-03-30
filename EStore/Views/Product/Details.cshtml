@@ -8,9 +8,12 @@
     <div class="col">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="/">Products</a></li>
-            <li class="breadcrumb-item">
-                <a asp-controller="Product" asp-action="Index" asp-route-category="@(Model.Product.CategoryId)">@Model.Product.Category.Name</a>
-            </li>
+            @if (Model.Product.CategoryId != null)
+            {
+                <li class="breadcrumb-item">
+                    <a asp-controller="Product" asp-action="Index" asp-route-category="@(Model.Product.CategoryId)">@Model.Product.Category.Name</a>
+                </li>
+            }
             <li class="breadcrumb-item active">@Model.Product.Name</li>
         </ol>
     </div>

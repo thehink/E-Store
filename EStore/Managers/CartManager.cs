@@ -113,6 +113,8 @@ namespace EStore.Managers
         {
             var signedIn = this._signInManager.IsSignedIn(userClaim);
 
+            string cartId = this._context.HttpContext.Request.Cookies["cartId"];
+
             if (signedIn)
             {
                 var user = await this.GetCurrentUserAsync(userClaim);
@@ -123,11 +125,25 @@ namespace EStore.Managers
                     return userCart;
                 }
 
+                
+                
+                //populate new cart with products of old cart
+                if (!string.IsNullOrEmpty(cartId))
+                {
+                    var findCart = this._cartRepository.Find(cartId);
+                    if (findCart != null)
+                    {
+                        findCart.UserId = user.Id;
+                        this._cartRepository.Update(findCart);
+
+                        this._context.HttpContext.Response.Cookies.Append("cartId", findCart.Id.ToString(), new CookieOptions() { Expires = new DateTimeOffset() });
+                        return findCart;
+                    }
+                }
+
                 var newCart = await CreateNewCartAsync(userClaim);
                 return newCart;
             }
-
-            string cartId = this._context.HttpContext.Request.Cookies["cartId"];
 
             if(!string.IsNullOrEmpty(cartId))
             {
