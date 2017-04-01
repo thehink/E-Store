@@ -34,7 +34,7 @@ namespace EStore.Repositories
 
             regexStr = regexStr.Remove(regexStr.Length - 1);
 
-            Regex regex = new Regex(@"^(.+)?(" + regexStr + @")(.+)?$", RegexOptions.IgnoreCase);
+            Regex regex = new Regex($"^(.+)?({regexStr})(.+)?$", RegexOptions.IgnoreCase);
 
             return this._context
                 .Include(s => s.Category)

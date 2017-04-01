@@ -31,7 +31,7 @@
 </div>
 
 <div class="row">
-    <div class="col-sm-4 col-md-4 col-xs-12 mb-4">
+    <div class="col-sm-5 col-md-4 col-xs-12 mb-4">
 
         @await Html.PartialAsync("_CartPartial")
 
@@ -68,16 +68,22 @@
         <div class="products row">
             @foreach (var product in Model.Products)
             {
-                <div class="col-xs-12 col-sm-12 col-md-6 col-lg-4">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                     <div class="card mb-2">
-                        @if (!string.IsNullOrEmpty(product.Image))
-                        {
-                            <img class="card-img-top img-fluid" src="@product.Image" alt="Card image cap">
-                        }
+
                         <div class="card-block">
-                            <h4 class="card-title"><a asp-controller="Product" asp-action="Details" asp-route-id="@product.Id">@product.Name  (@product.Price kr)</a></h4>
-                            <p class="card-text">@product.Description</p>
-                            <a href="@Url.Action("AddToCart", "Cart", new { id = product.Id })" class="btn btn-primary">Add To Cart</a>
+                            <div class="media">
+                                @if (!string.IsNullOrEmpty(product.Image))
+                                {
+                                    <img class="d-flex mr-3" style="max-width:100px" src="@product.Image" alt="Generic placeholder image">
+                                }
+
+                                <div class="media-body">
+                                    <h4 class="card-title"><a asp-controller="Product" asp-action="Details" asp-route-id="@product.Id">@product.Name  (@product.Price kr)</a></h4>
+                                    <p class="card-text">@product.Description</p>
+                                    <a href="@Url.Action("AddToCart", "Cart", new { id = product.Id })" class="btn btn-primary">Add To Cart</a>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
