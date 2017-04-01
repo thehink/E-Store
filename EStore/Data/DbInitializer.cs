@@ -21,7 +21,7 @@ namespace EStore.Data
 
         public static string[][] Products = new string[][]
         {
-            new string[]{ "Yellow Banana", "Nice yellow* banana delivered to your closest service point. * Might be a bit darker when you get it.", "Fruits", "banana.png" },
+            new string[]{ "Yellow Banana", "Nice yellow banana delivered to your nearest service point." },
             new string[]{ "Red Cherry", "", "Fruits", "cherry.png" },
 
             new string[]{ "Sofisticated Crocodile", "", "Animals", "crocodile.png" },
@@ -32,7 +32,7 @@ namespace EStore.Data
             new string[]{ "Real Human Skull", "Ever felt the need to own a real human skull?", "Stuff", "skull.png" },
             new string[]{ "Stop Sign", "When just saying stop is not enough", "Stuff", "stop.png" },
             new string[]{ "Single Wheel", "", "Stuff", "wheel.png" },
-            new string[]{ "Sun", "", "Stuff", "sun.png" },
+            new string[]{ "Bright Sun", "", "Stuff", "sun.png" },
             new string[]{ "Real Fake Diamond", "", "Stuff", "diamond.png" },
             new string[]{ "Carpet", "", "Stuff", "carpet.png" },
 

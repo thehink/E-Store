@@ -71,6 +71,5 @@ namespace EStore.Data
 
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderItem> OrderItems { get; set; }
-        public DbSet<EStore.Models.Admin.ManageCategoriesViewModels.EditCategoryViewModel> EditCategoryViewModel { get; set; }
     }
 }
