@@ -1,10 +1,10 @@
 # E-Store
 
-# Requirements
+## Requirements
 - Visual Studio 2017
 - .Net Core Tools
 
-# Install
+## Install
 
 1. Clone repo `git clone https://github.com/thehink/e-store.git`
 1. Open project in visual studio 2017
