@@ -7,3 +7,4 @@
 1. Set your connection string in `appsettings.json`
 1. Run `Update-Database`
 1. Should be ready to launch
+1. Login with username: admin@demo password: Demo.1
